@@ -1,6 +1,6 @@
 /**
 * @file
-* @brief Cabeçãrio principal.
+* @brief Cabeçário principal.
 * @author Natália Azevedo de Brito (https://github.com/bnatalha)
 * @since 02/06/2017
 * @date --
