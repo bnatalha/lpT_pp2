@@ -1,7 +1,7 @@
 ## Projeto de Programação 2
 ###### por [Michel Jean Katsilis](https://github.com/MJK2) e [Natália Azevedo de Brito](https://github.com/bnatalha)
 
-O programa gerado Fará a admnistração dos produtos da loja QLeveTudo, sendo capaz e realizar as seguintes tarefas:
+O programa gerado irá ajudar an admnistração dos produtos da loja QLeveTudo, sendo capaz e realizar as seguintes tarefas:
 
 - [EM CONSTRUÇÃO] ~~Cadastro de um novo produto~~;
 - [EM CONSTRUÇÃO] ~~Remoção de um produto~~;
