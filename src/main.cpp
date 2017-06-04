@@ -8,6 +8,7 @@
 */
 #include "header.h"
 #include "Produto.h"
+#include "Produto_tipos.h"
 
 /**
 * @brief Função principal
@@ -35,8 +36,11 @@ int main(int argc, char const *argv[])
 
 	// Testando criação de tipos de produtos
 
-	Bebida A;
-	Bebida B("12/06/18",30,4.6);
+	Bebida A;	// Não pode ser pq ja existe um "produto A"
+	Bebida AA;	// Não pode ser pq ja existe um "produto A"
+	Bebida BB("12/06/18",30,4.6);
+
+	cout << AA << endl << BB << endl;
 	
 
 	return 0;

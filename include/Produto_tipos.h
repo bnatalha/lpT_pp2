@@ -1,3 +1,6 @@
+#ifndef PRODUTOS_TIPOS_H
+#define PRODUTOS_TIPOS_H
+
 /**
 * @file
 * @brief Implementação dos tipos de produtos (derivados da classe Produto)
@@ -36,13 +39,22 @@ class Bebida : public Produto
 		// Métodos
 
 		// Gets
-		string get_expiration();
-		float get_alchool();
-		float get_sugar();
+		string get_expiration() { return expiration; }
+		float get_alchool() { return alchool; }
+		float get_sugar() { return sugar; }
 
 		// Sets
-		string set_expiration(const string &x) : expiration(x) {}
-		float set_alchool(const float &x) : alchool(x) {}
-		float set_sugar(const float &x) : sugar(x) {}
+		void set_expiration(const string &x) { expiration = x; }
+		void set_alchool(const float &x) { alchool = x; }
+		void set_sugar(const float &x) { sugar = x; }
 
+		// Sobrecarga de operadores
+		
 };
+
+// Implementações
+
+// Sobrecarga de operadores
+
+
+#endif

@@ -1,3 +1,6 @@
+#ifndef PRODUTOS_H
+#define PRODUTOS_H
+
 /**
 * @file
 * @brief Definição e implementação da classe Produto
@@ -93,6 +96,16 @@ ostream& operator<< (ostream &out, const Produto &x)
 		<< ", Preço: R$" << x.price	// Trocar '.' por ',' na impressão
 		<< ", Código de Barras: " << x.barcode << "]";
 
+		// Único de cada classe
+		if (x.product_type != "")
+		{
+			if(product_type == "Bebida")
+			{
+				out << "/\\\tVencimento: " << x.expiration
+					<< " , Teor Alcoólico: " << x.alchool << "%"
+					<< " , Taxa de açucar: " << x.sugar << "mg]";
+			}
+		}
 	return out;
 }
 
@@ -142,3 +155,5 @@ float operator- (float y, const Produto &x)
 {
 	return( y - x.price);
 }
+
+#endif
