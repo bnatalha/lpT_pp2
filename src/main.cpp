@@ -11,9 +11,6 @@
 
 /**
 * @brief Função principal
-* @detail 
-* @param argc Tamanho de 'argv'
-* @param argv Ponteiro para um array de Char constante com --
 */
 int main(int argc, char const *argv[])
 {
@@ -35,6 +32,11 @@ int main(int argc, char const *argv[])
 	// Testando sobrecarga de + e -
 	cout << "Total: " << A+D+C+B << endl	// 13.8 + 13 + 13.8 + 0 = 40.6
 		<< "A-D+C-B: " << A-D+C-B << endl;	// 13.8 - 13 + 13.8 - 0 = 14.6
+
+	// Testando criação de tipos de produtos
+
+	Bebida A;
+	Bebida B("12/06/18",30,4.6);
 	
 
 	return 0;
