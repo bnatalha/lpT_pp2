@@ -37,7 +37,7 @@ docs: Doxyfile
 
 # ============== VALGRIND =================
 # Runs valgrind with 'bin/QLT'
-val1:
+val:
 	valgrind --leak-check=yes bin/QLT
 
 # ============== EXECUTABLES ==============

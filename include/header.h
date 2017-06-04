@@ -21,6 +21,7 @@ using std::cerr;
 #include <string>	
 using std::string;
 
-
+#include <ostream>
+using std::ostream;
 
 #endif
