@@ -17,10 +17,18 @@ class Bebida : public Produto
 		float sugar;	/**< Taca de açucar (em mg) */
 
 	public:
+
+		/**
+		* @brief Constrói um objeto Bebida sem especificar seus dados
+		* @sa Chamando construtor da classe Mãe na classe filha no construtoe(http://www.studytonight.com/cpp/order-of-constructor-call.php)
+		*/
 		Bebida() 
 			: Produto("Bebida","", 0, "00000000"), expiration(""), alchool(0), sugar(0)
 		{}
 
+		/**
+		* @brief Constrói um objeto Bebida sem especificar seus dados
+		*/
 		Bebida(string vencimento, float teor_alcool, float acucar_mg) 
 			: Produto("Bebida","", 0, "00000000"), expiration(""), alchool(0), sugar(0)
 		{}
