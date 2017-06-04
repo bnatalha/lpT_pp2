@@ -11,15 +11,16 @@
 #define HEADER_H
 
 #include <iostream>	//	para cout(), cin(), endl(), cerr();
-#include <cstdlib>	//	para exit();
-#include <string>	
-#include <chrono>
-
 using std::cout;
 using std::cin;
 using std::endl;
 using std::cerr;
+
+#include <cstdlib>	//	para exit();
+
+#include <string>	
 using std::string;
+
 
 
 #endif
