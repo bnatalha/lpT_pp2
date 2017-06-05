@@ -7,6 +7,7 @@
 * @sa --
 */
 #include "header.h"
+#include "myLista.h"
 #include "Produto.h"
 #include "Produto_tipos.h"
 
@@ -36,12 +37,13 @@ int main(int argc, char const *argv[])
 
 	// Testando criação de tipos de produtos
 
-	Bebida A;	// Não pode ser pq ja existe um "produto A"
-	Bebida AA;	// Não pode ser pq ja existe um "produto A"
+	//Bebida A;	// Não pode ser pq ja existe um "produto A"
+	Bebida AA;
 	Bebida BB("12/06/18",30,4.6);
 
 	cout << AA << endl << BB << endl;
 	
+	myLista<Produto> ABC;
 
 	return 0;
 }
