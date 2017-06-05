@@ -10,8 +10,9 @@
 CPPFLAGS += -Wall -ansi -std=c++11 -pedantic -O0 -g
 
 # include directory
-INC =-I include
-INCLISTA =-I include/lista
+INC1 =-I include
+INC2 =-I include/lista 
+INC3 =-I include/produtos 
 
 
 # - - - - - - - - - - - - - - - - - - - -
@@ -49,7 +50,7 @@ bin/QLT: bin/main.o
 # ================ OBJECTS ================
 # For QLT:
 bin/main.o: src/main.cpp
-	g++ $(CPPFLAGS) $< $(INC) $(INCLISTA) -c -o $@
+	g++ $(CPPFLAGS) $< $(INC1) $(INC2) $(INC3) -c -o $@
 
 # ================ CLEANER ================
 # Removes objects

@@ -18,7 +18,7 @@
 */
 class Produto
 {
-	private:
+	protected:
 		string product_type;	/**< Tipo de produto (bebida, cd,etc) */
 		string provider;	/**< Nome do fornecedor deste produto */
 		float price;	/**< Preço do produto em R$*/
@@ -29,85 +29,58 @@ class Produto
 		/**
 		* @brief Constrói um objeto Produto sem especificar seus dados
 		*/
-		Produto(string produto, string fornecedor , float valor, string codigo)
-			: product_type(produto), provider(fornecedor), price(valor), barcode(codigo)
+		Produto()
+			: product_type(""), provider(""), price(0), barcode("00000000")
 		{}
 		
 		/**
-		* @brief Constrói um lista a partir de uma lista já existente
-		* @param copy Lista a ser copiada
+		* @brief Constrói um Produto especificando seus atributos a partir de passagem de parâmetros
 		*/
-		Produto()
-			: product_type(""), provider(""), price(0), barcode("00000000")
+		Produto(string produto, string fornecedor , float valor, string codigo)
+			: product_type(produto), provider(fornecedor), price(valor), barcode(codigo)
 		{}
 
 		/**
 		* @brief Produto criado a partir de outro produto (cópia)
-		* @param original produto a ser copiada
+		* @param original produto a ser copiado
 		*/
 		Produto( const Produto &origem)
 			: product_type(origem.product_type), provider(origem.provider), price(origem.price), barcode(origem.barcode)
 		{}
 
-		// Sem destrutor
+		// Sem destrutor (?)
 
 		// Métodos
-		string get_type();
-		string get_barcode();
+
+		// Getter // Checar documentaçao
+
+		string get_type() { return product_type; }	/**< Retorna o tipo do produto (string) */
+		string get_provider() { return provider; }	/**< Retorna o nome do fornecedor do produto (string) */
+		float get_price() { return price; }	/**< Retorna preço do produto (float) */
+		string get_barcode() { return barcode; }	/**< Retorna o código de barras do produto (string) */
+
+		// Setters	// Checar se funciona pra rvalue
+		void set_type( const string& x ) { product_type = x; }	/**< Modifica o tipo do produto (string) */
+		void set_provider( const string& x ) { provider = x; }	/**< Modifica o nome do fornecedor do produto (string) */
+		void set_price( const float& x ) { price = x; }	/**< Modifica preço do produto (float) */
+		void set_barcode( const string& x ) { barcode = x; } 	/**< Modifica o código de barras do produto (string) */
 
 		// Sobrecarga de operadores
-		friend ostream& operator<< (ostream &out, const Produto &x);	/**< Sobrecarga do << */
-		//friend &istream operator>> (istream &in, const Produto x);	/**< Sobrecarga do >> */
 		float operator+ (const Produto &x);	/**< Retorna o resultado da adição do preço de dois produtos */
 		friend float operator+ (float y, const Produto &x);	/**< Retorna o resultado da adição de um float com o preço do produto */
 		float operator- (const Produto &x);	/**< Retorna o resultado da subtração do preço de dois produtos */
 		friend float operator- (float y, const Produto &x);	/**< Retorna o resultado da subtração de um float com o preço do produto */
 		bool operator== (const Produto &x);	/**< Verifica se dois produtos tem codigós de barra iguais */
+		
+		// auxiliar da sobrecarga de extração
+		virtual void print_it (std::ostream& out) const;	/**< Função que define como vai ser a impressão do produto */
+		
+		//friend &istream operator>> (istream &in, const Produto x);	/**< Sobrecarga do >> */
 };
 
 // ============ Implementação ============
 
-/**
-* @returns O tipo do produto (string)
-*/
-string Produto::get_type()
-{
-	return(product_type);
-}
-
-/**
-* @returns O código de barras do produto (string)
-*/
-string Produto::get_barcode()
-{
-	return(barcode);
-}
-
 //  == Sobrecarga de operadores ==
-
-/**
-* @param out Referência para um stream de saída
-* @param x Produto a ser "impresso"
-*/
-ostream& operator<< (ostream &out, const Produto &x)
-{
-	out << "[Produto: " <<  x.product_type
-		<< ", Fornecedor: " << x.provider
-		<< ", Preço: R$" << x.price	// Trocar '.' por ',' na impressão
-		<< ", Código de Barras: " << x.barcode << "]";
-
-		// Único de cada classe
-		if (x.product_type != "")
-		{
-			if(product_type == "Bebida")
-			{
-				out << "/\\\tVencimento: " << x.expiration
-					<< " , Teor Alcoólico: " << x.alchool << "%"
-					<< " , Taxa de açucar: " << x.sugar << "mg]";
-			}
-		}
-	return out;
-}
 
 /**
 * @param x Referência para o Produto a ser comparado
@@ -132,7 +105,7 @@ float operator+ (float y, const Produto &x)
 * @param x Referência para o Produto a ter seu preço usado como segunda parcela de uma soma
 * @return Um float com o valor do preço do produto atual + o preço do produto 'x'
 */
-float Produto::operator+ (const Produto &x)
+float Produto::operator+(const Produto &x)
 {
 	return( this->price + x.price);
 }
@@ -141,7 +114,7 @@ float Produto::operator+ (const Produto &x)
 * @param x Referência para o Produto a ter seu preço usado como segunda parcela da subtração
 * @return Um float com o valor do preço do produto atual - o preço do produto 'x'
 */
-float Produto::operator- (const Produto &x)
+float Produto::operator-(const Produto &x)
 {
 	return( this->price - x.price);
 }
@@ -151,9 +124,35 @@ float Produto::operator- (const Produto &x)
 * @param x Referência para o Produto a ter seu preço usado como segunda parcela de uma subtração
 * @return Um float com o valor do preço do produto atual - o preço do produto 'x'
 */
-float operator- (float y, const Produto &x)
+float operator-(float y, const Produto &x)
 {
 	return( y - x.price);
+}
+
+/**
+* @param out Referência para um stream de saída
+* @sa sobrecarga de operadores em subclasses (https://stackoverflow.com/questions/19376943/)
+*/
+void Produto::print_it(std::ostream& out) const
+{
+	out << "[Produto: " <<  this->product_type
+		<< ", Fornecedor: " << this->provider
+		<< ", Preço: R$" << this->price	// Trocar '.' por ',' na impressão
+		<< ", Código de Barras: " << this->barcode;
+		<< "]";
+}
+
+// ================= Função Fora de Produto =================
+
+/**
+* @brief Sobrecarga do operador de extração usando a classe Produto. Esta função tem uma sobrecarga (versão diferente) para cada subclasse de Produto
+* @param out Referência para um stream de saída
+* @param x Produto a ser "impresso"
+*/
+ostream& operator<< (ostream &out, const Produto &product)
+{
+	product.print_it(out);
+	return out;
 }
 
 #endif

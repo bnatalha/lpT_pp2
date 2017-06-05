@@ -9,13 +9,7 @@
 #include "header.h"
 #include "myLista.h"
 #include "Produto.h"
-#include "Bebida.h"
-#include "Doce.h"
-#include "Fruta.h"
-#include "Salgado.h"
-#include "Cd.h"
-#include "Dvd.h"
-#include "Livro.h"
+#include "Produto_tipos.h"
 
 /**
 * @brief Função principal
@@ -35,7 +29,7 @@ int main(int argc, char const *argv[])
 	cout << "Os produtos" << (A == A ? " ":" não ") << "são iguais." << endl;
 	cout << "Os produtos" << (A == B ? " ":" não ") << "são iguais." << endl;
 	cout << "Os produtos" << (A == C ? " ":" não ") << "são iguais." << endl;
-	cout << "Os produtos" << (A == C ? " ":" não ") << "são iguais." << endl;
+	cout << "Os produtos" << (A == D ? " ":" não ") << "são iguais." << endl;
 
 	// Testando sobrecarga de + e -
 	cout << "Total: " << A+D+C+B << endl	// 13.8 + 13 + 13.8 + 0 = 40.6
