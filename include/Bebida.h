@@ -1,5 +1,5 @@
-#ifndef PRODUTOS_TIPOS_H
-#define PRODUTOS_TIPOS_H
+#ifndef BEBIDA_H
+#define BEBIDA_H
 
 /**
 * @file
@@ -15,7 +15,7 @@
 class Bebida : public Produto
 {
 	private:
-		string expiration; /**< Vencimento do produto */
+		string expiration; /**< Vencimento da bebida */
 		float alchool;	/**< Teor alcoólico (em %) */
 		float sugar;	/**< Taca de açucar (em mg) */
 
@@ -33,7 +33,7 @@ class Bebida : public Produto
 		* @brief Constrói um objeto Bebida sem especificar seus dados
 		*/
 		Bebida(string vencimento, float teor_alcool, float acucar_mg) 
-			: Produto("Bebida","", 0, "00000000"), expiration(""), alchool(0), sugar(0)
+			: Produto("Bebida","", 0, "00000000"), expiration(vencimento), alchool(teor_alcool), sugar(acucar_mg)
 		{}
 
 		// Métodos
