@@ -21,8 +21,8 @@ class CD : public Produto
 {
 	private:
 		string name;	/**< Nome do CD */
-		string style; /**< Estilo do CD */
 		string artist;	/**< Artista do CD */
+		string style; /**< Estilo do CD */
 
 	public:
 
@@ -30,27 +30,27 @@ class CD : public Produto
 		* @brief Constrói um objeto CD sem especificar seus dados
 		*/
 		CD() 
-			: Produto("CD","", 0, "00000000"), artist(""), style(""), name("")
+			: Produto("CD","", 0, "00000000"), name(""), artist(""), style("")
 		{}
 
 		/**
 		* @brief Constrói um objeto CD especificando seus atributos a partir de passagem de parâmetros
 		*/
-		CD(string estilo, string artista, string nome) 
-			: Produto("CD","", 0, "00000000"), artist(""), style(estilo), artist(artista), name(nome)
+		CD(string nome, string artista, string estilo) 
+			: Produto("CD","", 0, "00000000"), name(nome), artist(artista), style(estilo)
 		{}
 
 		// Métodos
 
 		// Gets
 		string get_name() { return name; }	/**< Retorna título do CD (string) */
-		string get_style() { return style; }	/**< Retorna o estilo do CD (string) */
 		string get_artist() { return artist; }	/**< Retorna artista do CD (string) */
+		string get_style() { return style; }	/**< Retorna o estilo do CD (string) */
 
 		// Sets
 		void set_name(const string &x) { name = x; }	/**< Altera título do CD (string) */
-		void set_style(const string &x) { style = x; }	/**< Altera o estilo do CD (string) */
 		void set_artist(const string &x) { artist = x; }	/**< Altera artista do CD (string) */
+		void set_style(const string &x) { style = x; }	/**< Altera o estilo do CD (string) */
 
 		// auxiliar da sobrecarga de extração
 		void print_it (std::ostream& out) const;	/**< Função que define como vai ser a impressão do produto */

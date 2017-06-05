@@ -68,8 +68,7 @@ void DVD::print_it(std::ostream& out) const
 		<< ", Fornecedor: " << provider
 		<< ", Preço: R$" << price	// Trocar '.' por ',' na impressão
 		<< ", Código de Barras: " << barcode
-		<< "\n/\\\tVencimento: " << expiration
-		<< " , Título: \"" << title << "\""			
+		<< "\n/\\\t Título: \"" << title << "\""	
 		<< " , Gênero: " << genre
 		<< " , Duração: " << duration << "min"
 		<< "]";

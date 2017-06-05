@@ -144,8 +144,8 @@ class myLista
 		bool empty();
 
 		// Modificadores
-		void push_sorted(const T& elem );
-		//void pop_sorted();
+		//void push_sorted(const T& elem );
+		void push_sorted( T& elem );
 		void push_back( const T& elem );	// bool se tiver como checar se pode ser alocado ou não
 		bool pop_back();
 		void push_front( const T& elem );

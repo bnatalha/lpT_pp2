@@ -22,7 +22,7 @@ class Produto
 		string product_type;	/**< Tipo de produto (bebida, cd,etc) */
 		string provider;	/**< Nome do fornecedor deste produto */
 		float price;	/**< Preço do produto em R$*/
-		string barcode;	/**< Código de barras */
+		string barcode;	/**< Código de barras (13 números símbolo EAN-13)*/
 
 	public:
 
@@ -30,7 +30,7 @@ class Produto
 		* @brief Constrói um objeto Produto sem especificar seus dados
 		*/
 		Produto()
-			: product_type(""), provider(""), price(0), barcode("00000000")
+			: product_type(""), provider(""), price(0), barcode("0000000000000")
 		{}
 		
 		/**
@@ -71,9 +71,12 @@ class Produto
 		float operator- (const Produto &x);	/**< Retorna o resultado da subtração do preço de dois produtos */
 		friend float operator- (float y, const Produto &x);	/**< Retorna o resultado da subtração de um float com o preço do produto */
 		bool operator== (const Produto &x);	/**< Verifica se dois produtos tem codigós de barra iguais */
+		bool operator> (const Produto &x); /**< Verifica se este produto tem o seu valor do código de barras maior do que o outro */
+		bool operator< (const Produto &x); /**< Verifica se este produto tem o seu valor do código de barras menor do que o outro */
 		
 		// auxiliar da sobrecarga de extração
 		virtual void print_it (std::ostream& out) const;	/**< Função que define como vai ser a impressão do produto */
+
 		
 		//friend &istream operator>> (istream &in, const Produto x);	/**< Sobrecarga do >> */
 };
@@ -83,12 +86,12 @@ class Produto
 //  == Sobrecarga de operadores ==
 
 /**
-* @param x Referência para o Produto a ser comparado
-* @returns Se os produtos comparadas tem o mesmo código de barras ou não
+* @param x Referência para o Produto a ter seu preço usado como segunda parcela de uma soma
+* @return Um float com o valor do preço do produto atual + o preço do produto 'x'
 */
-bool Produto::operator== (const Produto &x)
+float Produto::operator+(const Produto &x)
 {
-	return (this->barcode == x.barcode);
+	return( this->price + x.price);
 }
 
 /**
@@ -99,15 +102,6 @@ bool Produto::operator== (const Produto &x)
 float operator+ (float y, const Produto &x)
 {
 	return( y + x.price);
-}
-
-/**
-* @param x Referência para o Produto a ter seu preço usado como segunda parcela de uma soma
-* @return Um float com o valor do preço do produto atual + o preço do produto 'x'
-*/
-float Produto::operator+(const Produto &x)
-{
-	return( this->price + x.price);
 }
 
 /**
@@ -129,6 +123,31 @@ float operator-(float y, const Produto &x)
 	return( y - x.price);
 }
 
+// Comparação
+
+/**
+* @param x Referência para o Produto a ser comparado
+* @returns Se os produtos comparadas tem o mesmo código de barras ou não
+*/
+bool Produto::operator== (const Produto &x)
+{
+	return (this->barcode == x.barcode);
+}
+
+/**
+* @param x Referência para o Produto a ter seu código de barras comparado
+*/
+bool Produto::operator>( const Produto &x){
+	return (barcode > x.barcode);
+}
+
+/**
+* @param x Referência para o Produto a ter seu código de barras comparado
+*/
+bool Produto::operator<( const Produto &x){
+	return (barcode < x.barcode);
+}
+
 /**
 * @param out Referência para um stream de saída
 * @sa sobrecarga de operadores em subclasses (https://stackoverflow.com/questions/19376943/)
@@ -138,7 +157,7 @@ void Produto::print_it(std::ostream& out) const
 	out << "[Produto: " <<  this->product_type
 		<< ", Fornecedor: " << this->provider
 		<< ", Preço: R$" << this->price	// Trocar '.' por ',' na impressão
-		<< ", Código de Barras: " << this->barcode;
+		<< ", Código de Barras: " << this->barcode
 		<< "]";
 }
 

@@ -27,7 +27,8 @@ void myLista<T>::clear()
 * @param elem Elemento a ser adicionado ao início da lista
 */
 template < typename T>
-void myLista<T>::push_sorted( const T& elem )
+//void myLista<T>::push_sorted( const T& elem )
+void myLista<T>::push_sorted( T& elem )
 {
 	if( existent_element(elem) == false )	// Se o elemento a ser acrescentado na lista não já pertencer à ela
 	{

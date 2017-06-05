@@ -75,11 +75,3 @@ void Fruta::print_it(std::ostream& out) const
 }
 
 #endif
-
-		
-};
-
-// Implementações
-
-
-#endif
