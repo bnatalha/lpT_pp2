@@ -48,7 +48,7 @@ class Produto
 			: product_type(origem.product_type), provider(origem.provider), price(origem.price), barcode(origem.barcode)
 		{}
 
-		// Sem destrutor (?)
+		~Produto(){}
 
 		// Métodos
 
@@ -171,5 +171,7 @@ ostream& operator<< (ostream &out, const Produto &product)
 	product.print_it(out);
 	return out;
 }
+
+#include "Produto_tipos.h"
 
 #endif

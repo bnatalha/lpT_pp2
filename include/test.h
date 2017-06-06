@@ -67,7 +67,6 @@ void test1()
 	Fruta e("14/07/2017",104,"14/06/2017");
 	Livro f("Destruindo sua teoria de conjunto","Russel","Ed. De Jesus", 1902);
 	Salgado g("14/06/2017",40,false,true);
-
 /*
 	ABC.push_sorted(a);
 	ABC.push_sorted(b);
@@ -77,9 +76,8 @@ void test1()
 	ABC.push_sorted(f);
 	ABC.push_sorted(g);
 */
-
 	ABC.push_sorted(new Bebida("15/06/17",35,600));
-	ABC.push_sorted(new Fruta("14/07/2017",104,"14/06/2017"));
+	//ABC.push_sorted(new Fruta("14/07/2017",104,"14/06/2017"));
 
 
 	cout << endl << "Testando lista de Produtos...{" << endl;
@@ -89,9 +87,9 @@ void test1()
 		cout << endl;
 	}
 	cout << "}" << endl;
-	/*
-	cout << "get de lista de produto: " << (ABC.front())->get_duration() << endl;
-	*/
+	
+	//cout << "get de lista de produto: " << (ABC.front())->get_duration() << endl;
+	
 
 	// Não funciona pq é Lista de Produto e não de DVD
 	// Uma lista de Estoque pra cada tipo de produto.

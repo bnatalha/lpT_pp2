@@ -39,6 +39,8 @@ class Bebida : public Produto
 			: Produto("Bebida","", 0, "00000000"), expiration(vencimento), alchool(teor_alcool), sugar(acucar_mg)
 		{}
 
+		~Bebida(){}
+
 		// Métodos
 
 		// Gets
