@@ -58,7 +58,7 @@ void test0()
 void test1()
 {
 	// Testando Lista de produtosz
-	myLista<Produto*> ABC;
+//	list<Produto*> ABC;
 	
 	Bebida a("15/06/17",35,600);
 	CD b("Melhor do que parece","O Terno","Rock nacional");
@@ -76,10 +76,10 @@ void test1()
 	ABC.push_sorted(f);
 	ABC.push_sorted(g);
 */
-	ABC.push_sorted(new Bebida("15/06/17",35,600));
+	//ABC.push_back(new Bebida("15/06/17",35,600));
 	//ABC.push_sorted(new Fruta("14/07/2017",104,"14/06/2017"));
 
-
+/*
 	cout << endl << "Testando lista de Produtos...{" << endl;
 	for (auto &e: ABC)
 	{
@@ -87,6 +87,12 @@ void test1()
 		cout << endl;
 	}
 	cout << "}" << endl;
+*/
+	list<list<int>> A;
+
+	list<int> aa;
+
+	A.push_back(a);
 	
 	//cout << "get de lista de produto: " << (ABC.front())->get_duration() << endl;
 	
