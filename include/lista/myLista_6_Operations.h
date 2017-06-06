@@ -116,7 +116,7 @@ void myLista<T>::unique()
 				if(fast->anterior != NULL and fast->proximo == NULL)	// Já percorreu toda a lista
 				// H-> [n_0]...[n_k-1][nó] <-T (Se só existe nó antes a deste e não depois)
 				{
-					fast = fast->proximo;	// *Avança o ponteiro para o fim da lista
+					fast = fast->proximo;	// *Avança o ponteiro em direção ao fim da lista
 					pop_back();
 					//fast = NULL;
 				}
@@ -141,6 +141,10 @@ void myLista<T>::unique()
 
 					qtd_elementos--; // Diminui o contador de elementos da lista
 				}
+			}
+			else
+			{
+				fast = fast->proximo; //	*Avança o ponteiro em direção ao fim da lista
 			}
 		}
 		slow = slow->proximo;	// Avança slow;

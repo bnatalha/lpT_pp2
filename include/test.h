@@ -183,10 +183,15 @@ void test_lista_2()
 	A.push_back(22);
 	for (int i = 0; i < 3; ++i)
 	{
-		A.push_back(i);
-		A.push_back(i);
-		A.push_back(i);
+		if(i%2)
+		{
+			A.push_back(2);
+			A.push_back(2);
+		}
+		A.push_back(3);
+
 	}
+	A.push_back(23);
 	A.push_back(23);
 
 	// testando unique
