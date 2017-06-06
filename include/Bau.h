@@ -1,5 +1,5 @@
-#ifndef SALGADO_H
-#define SALGADO_H
+#ifndef BAU_H
+#define BAU_H
 
 /**
 * @file
@@ -12,39 +12,38 @@
 */
 
 #include "Produto.h"
+#include "Grupo_Produto.h"
 
 /**
-* @class Salgado
-* @brief Herdeira da classe Produto, usada para produtos do tipo salgado
+* @class Bau
+* @brief Contém um Grupo_Produto para cada tipo de produto e os modifica.
 */
-class Salgado : public Produto
+class Bau
 {
 	private:
-		string expiration; /**< Vencimento do Salgado */
-		float sodium;	/**< Taxa de sodio (em mg) */
-		bool gluten;    /**< Bala contem glúten ou nao */
-		bool lactose;   /**< Bala contem lactose ou nao */
+		Grupo_Produto<CD> l_cds; /**< Grupo de Produtos do tipo CD  */
+		Grupo_Produto<Salgado> l_salga;	/**< Grupo de Produtos do tipo CD */
+
+		// doce etc
 
 	public:
 
 		/**
 		* @brief Constrói um objeto Salgado sem especificar seus dados
 		*/
-		Salgado() 
-			: Produto("Salgado","", 0, "00000000"), expiration(""), sodium(0), gluten(false), lactose(false)
-		{}
+		Bau(){}
 
 		/**
 		* @brief Constrói um objeto Salgado especificano seus dados através da passagem de seus atributos como parâmetro
 		*/
-		Salgado(string vencimento, float sodio, bool glut, bool lacto) 
-			: Produto("Salgado","", 0, "00000000"), expiration(vencimento), sodium(0), gluten(glut), lactose(lacto)
+		Bau( const Bau& origem) 
+			: l_cds(origem.l_cds), l_salga(origem.l_salga)
 		{}
 
 		/**
 		* @brief Destrutor virtual de CD
 		*/
-		virtual ~Salgado(){}
+		virtual ~Bau(){}
 
 		// Métodos
 

@@ -40,6 +40,11 @@ class CD : public Produto
 			: Produto("CD","", 0, "00000000"), name(nome), artist(artista), style(estilo)
 		{}
 
+		/**
+		* @brief Destrutor virtual de CD
+		*/
+		virtual ~CD(){}
+
 		// Métodos
 
 		// Gets

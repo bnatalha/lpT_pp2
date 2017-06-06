@@ -58,14 +58,15 @@ void test0()
 void test1()
 {
 	// Testando Lista de produtosz
-//	list<Produto*> ABC;
+	list<Produto*> ABC;
+	//myLista<Produto*> ABC;
 	
-	Bebida a("15/06/17",35,600);
+	//Bebida a("15/06/17",35,600);
 	CD b("Melhor do que parece","O Terno","Rock nacional");
-	DVD c("Zapzap: o filme", "Ficção científica", 240);
-	Doce d("14/06/2017",5,true,true);
-	Fruta e("14/07/2017",104,"14/06/2017");
-	Livro f("Destruindo sua teoria de conjunto","Russel","Ed. De Jesus", 1902);
+	//DVD c("Zapzap: o filme", "Ficção científica", 240);
+	//Doce d("14/06/2017",5,true,true);
+	//Fruta e("14/07/2017",104,"14/06/2017");
+	//Livro f("Destruindo sua teoria de conjunto","Russel","Ed. De Jesus", 1902);
 	Salgado g("14/06/2017",40,false,true);
 /*
 	ABC.push_sorted(a);
@@ -76,10 +77,11 @@ void test1()
 	ABC.push_sorted(f);
 	ABC.push_sorted(g);
 */
-	//ABC.push_back(new Bebida("15/06/17",35,600));
+	CD* p = new CD("The Black Album","Metallica","Infantil");
+	ABC.push_back(p);
 	//ABC.push_sorted(new Fruta("14/07/2017",104,"14/06/2017"));
 
-/*
+
 	cout << endl << "Testando lista de Produtos...{" << endl;
 	for (auto &e: ABC)
 	{
@@ -87,15 +89,10 @@ void test1()
 		cout << endl;
 	}
 	cout << "}" << endl;
-*/
-	list<list<int>> A;
-
-	list<int> aa;
-
-	A.push_back(a);
 	
-	//cout << "get de lista de produto: " << (ABC.front())->get_duration() << endl;
+	cout << "get de lista de produto: " << (ABC.front())->get_duration() << endl;
 	
+	delete p;
 
 	// Não funciona pq é Lista de Produto e não de DVD
 	// Uma lista de Estoque pra cada tipo de produto.

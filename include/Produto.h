@@ -48,7 +48,7 @@ class Produto
 			: product_type(origem.product_type), provider(origem.provider), price(origem.price), barcode(origem.barcode)
 		{}
 
-		~Produto(){}
+		virtual ~Produto(){}
 
 		// Métodos
 
@@ -144,32 +144,6 @@ bool Produto::operator>( const Produto &x){
 */
 bool Produto::operator<( const Produto &x){
 	return (barcode < x.barcode);
-}
-
-/**
-* @param out Referência para um stream de saída
-* @sa sobrecarga de operadores em subclasses (https://stackoverflow.com/questions/19376943/)
-*/
-void Produto::print_it(std::ostream& out) const
-{
-	out << "[Produto: " <<  this->product_type
-		<< ", Fornecedor: " << this->provider
-		<< ", Preço: R$" << this->price	// Trocar '.' por ',' na impressão
-		<< ", Código de Barras: " << this->barcode
-		<< "]";
-}
-
-// ================= Função Fora de Produto =================
-
-/**
-* @brief Sobrecarga do operador de extração usando a classe Produto. Esta função tem uma sobrecarga (versão diferente) para cada subclasse de Produto
-* @param out Referência para um stream de saída
-* @param x Produto a ser "impresso"
-*/
-ostream& operator<< (ostream &out, const Produto &product)
-{
-	product.print_it(out);
-	return out;
 }
 
 #include "Produto_tipos.h"

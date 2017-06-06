@@ -151,7 +151,7 @@ class myLista
 		void push_front( const T& elem );
 		bool pop_front();
 		void clear();
-		//erase()	iterator
+		void erase();
 		//insert()	iterator
 
 		// Operações
