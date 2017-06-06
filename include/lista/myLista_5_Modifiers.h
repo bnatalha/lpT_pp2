@@ -30,8 +30,8 @@ template < typename T>
 //void myLista<T>::push_sorted( const T& elem )
 void myLista<T>::push_sorted( T elem )
 {
-	if( existent_element(elem) == false )	// Se o elemento a ser acrescentado na lista não já pertencer à ela
-	{
+//	if( existent_element(elem) == false )	// Se o elemento a ser acrescentado na lista não já pertencer à ela
+//	{
 		myNode *new_node = new myNode(elem);	// Cria um novo nó dinamicamente com o elemento a ser adicionado
 
 		if ( empty() )	 // Se for o primeiro nó da lista (sentinelas não contam)
@@ -74,7 +74,7 @@ void myLista<T>::push_sorted( T elem )
 				qtd_elementos++;	// Total de elementos da lista aumenta	
 			}
 		}
-	}
+//	}
 }
 
 /**

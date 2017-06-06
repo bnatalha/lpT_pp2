@@ -17,7 +17,9 @@
 */
 int main(int argc, char const *argv[])
 {
-	test1();
+	//test1();
+
+	test_lista_2();
 
 	return 0;
 }

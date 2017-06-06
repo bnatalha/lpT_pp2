@@ -93,4 +93,62 @@ bool myLista<T>::existent_element(const T& elem)
 	return false;	// Se não encontrar o valor, retorna falso
 }
 
+/**
+* @brief Tira da lista seus elementos repetidos
+* @param elem Valor buscado para ser removido
+*/
+template < typename T>
+void myLista<T>::unique()
+{
+	myNode *slow = sentinela_head;	// Cria ponteiro para o início da lista
+	myNode *fast ;	// Ponteiro que buscará pelos elementos apontados por 'slow'
+	myNode *_destruir;	// Ponteiro que aponta para o nó a ser destruído
+
+	while(slow != NULL)	// Percorre toda a lista
+	{
+		fast = slow->proximo;	// Aponta o 'fast' para o nó após 'slow';
+		
+		while( fast != NULL)	// Percorre toda a lista de pois de 'slow'
+		{
+			if(slow->elemento == fast->elemento)	// Se os nós apontados por fast e slow tiverem o mesmo elemento
+			{				
+				// Verificando posição do nó apontado por 'fast'
+				if(fast->anterior != NULL and fast->proximo == NULL)	// Já percorreu toda a lista
+				// H-> [n_0]...[n_k-1][nó] <-T (Se só existe nó antes a deste e não depois)
+				{
+					fast = fast->proximo;	// *Avança o ponteiro para o fim da lista
+					pop_back();
+					//fast = NULL;
+				}
+				else if(fast->anterior != NULL and fast->proximo != NULL)
+				// H-> [n_0]...[n_z][nó][n_z+2]...[n_k] <-T (Se existe nó antes e depois deste)
+				{
+					// Inicialmente: [x]-[nó]-[y],	onde "-" indica que estão conectados em ambos sentidos (anterior e proximo)
+					
+					fast->anterior->proximo = fast->proximo;	// Pega o nó anterior ao selecionado e o conecta com o próximo do atual
+					// [x]->[z]  [x]<-[nó]-[z]
+					
+					fast->proximo->anterior = fast->anterior;	// Pega o nó depois do selecionado e o conecta com o anterior do selecionado
+					// [x]-[z] [x]<-[nó]->[z]
+					
+					_destruir = fast;	// Atribui ao ponteiro destrutor qual o nó a ser destruído
+					// _destruir -> [nó]
+					
+					fast = fast->proximo; //	*Avança o ponteiro em direção ao fim da lista
+					// fast -> [nó]
+					
+					delete _destruir; // Destrói o nó [nó]
+
+					qtd_elementos--; // Diminui o contador de elementos da lista
+				}
+			}
+		}
+		slow = slow->proximo;	// Avança slow;
+	}
+
+	// *Tem que avançar o fast antes de destruir o nó para onde ele ta apontado
+
+}
+
+
 #endif

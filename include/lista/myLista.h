@@ -156,11 +156,13 @@ class myLista
 
 		// Operações
 		void remove(const T& val);
+		void unique();
 		// > Auxiliares dos modificadores
 		bool existent_element(const T& elem);
 		//sort();
 
 		// Sobrecarga de operadores
+		bool operator== ( myLista<T> l_direita);
 		myLista<T>& operator= (const myLista<T> copy);
 		// PARA TESTE: sobrecarga operador <<
 		template <typename foo>
@@ -169,6 +171,33 @@ class myLista
 
 // Implementação de Sobrecargas
 
+/**
+* @brief Sobrecarga do operador "==". Checa se duas listas são iguais.
+* @param copy Lista a ser comparada
+*/
+template <typename T>
+bool myLista<T>::operator== ( myLista<T> l_direita)
+{
+	if(size() != l_direita.size()) // Se as listas forem de tamanhos diferentes
+		return false;	// São diferentes
+	
+	//else	
+
+	myNode *esq = sentinela_head;	// Cria ponteiro para o início desta lista
+	myNode *dir = l_direita.sentinela_head;	// Cria ponteiro para o início da lista a ser comparada
+	
+	while( esq != NULL )	// Enquanto não chegar ao fim da lista*
+	{
+		if (esq->elemento != dir->elemento) return false;	// Se o conteúdo dos ponteiros forem diferentes entre sí, não são listas iguais
+
+		esq = esq->proximo;	// Movimento o ponteiro para frente
+		dir = dir->proximo;	// Movimento o ponteiro para frente
+	}
+
+	return true;
+
+	// *Os dois ponteiros andam na mesma velocidade em listas de tamanhos iguais
+}
 
 /**
 * @brief Sobrecarga do operador "="

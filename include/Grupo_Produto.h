@@ -57,6 +57,7 @@ class Grupo_Produto
 		void register_P( const tipo_P& prod ) { l_produtos.push_sorted(prod); }	/**< Adiciona um produto tipo_P a lista do grupo */
 		//void modify_P( const tipo_P& prod );
 		void remove_P( const tipo_P& prod );
+		void print_P( std::ostream& out );
 		
 		//friend &istream operator>> (istream &in, const Produto x);	/**< Sobrecarga do >> */
 };
@@ -93,6 +94,19 @@ bool Grupo_Produto<tipo_P>::remove_P( const tipo_P& prod )
 {
 	l_produtos(prod);
 }
+
+template <typename tipo_P>
+bool Grupo_Produto<tipo_P>::print_P( const tipo_P& prod )
+{
+	cout << "{" << endl;
+	for (auto &e: l_produtos)
+	{
+		e->print_it(cout);
+		cout << endl;
+	}
+	cout << "}" << endl;
+}
+
 
 /*
 template <>

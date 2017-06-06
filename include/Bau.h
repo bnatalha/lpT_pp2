@@ -4,7 +4,6 @@
 /**
 * @file
 * @brief Implementação de um Salgado (derivados da classe Produto)
-* @author Michel Jean Katsilis (https://github.com/MJK2)
 * @author Natália Azevedo de Brito (https://github.com/bnatalha)
 * @since 04/06/2017
 * @date --
@@ -29,57 +28,33 @@ class Bau
 	public:
 
 		/**
-		* @brief Constrói um objeto Salgado sem especificar seus dados
+		* @brief Constrói um objeto Bau sem especificar seus dados
 		*/
 		Bau(){}
 
 		/**
-		* @brief Constrói um objeto Salgado especificano seus dados através da passagem de seus atributos como parâmetro
+		* @brief Constrói um objeto Bau como uma cópia de outro Bau já existente
 		*/
 		Bau( const Bau& origem) 
 			: l_cds(origem.l_cds), l_salga(origem.l_salga)
 		{}
 
 		/**
-		* @brief Destrutor virtual de CD
+		* @brief Destrutor virtual de Bau
 		*/
 		virtual ~Bau(){}
 
 		// Métodos
+		
+		void absorb_B( Bau& origem);	/**<  Move todos os itens de 'origem' () para o Bau que chamou está função */
 
-		// Gets
-		string get_expiration() { return expiration; }
-		float get_sodium() { return sodium; }	/**< Retorna a taxa de sódio (em mg) do produto */
-		bool get_gluten() { return gluten; }	/**< Retorna se o produto contém glúten ou não */
-		bool get_lactose() { return lactose; }	/**< Retorna se o produto contém lactose ou não */
-
-		// Sets
-		void set_expiration(const string &x) { expiration = x; }
-		void set_sodium(const float &x) { sodium = x; }	/**< Altera a taxa de açucar (em mg) do produto */
-		void set_gluten(const bool &x) { gluten = x; }	/**< Altera o atributo que diz se o produto contém glúten ou não */
-		void set_lactose(const bool &x) { lactose = x; }	/**< Altera o atributo que diz se o produto contém lactose ou não */
-
-		// auxiliar da sobrecarga de extração
-		void print_it (std::ostream& out) const;	/**< Função que define como vai ser a impressão do produto */
 };
 
 // Implementações
-
-/**
-* @param out Referência para um stream de saída
-* @sa sobrecarga de operadores em subclasses (https://stackoverflow.com/questions/19376943/)
-*/
-void Salgado::print_it(std::ostream& out) const
+void Bau::absorb_B( Bau& origem)
 {
-	out << "[Produto: " <<  product_type
-		<< ", Fornecedor: " << provider
-		<< ", Preço: R$" << price	// Trocar '.' por ',' na impressão
-		<< ", Código de Barras: " << barcode
-		<< "\n/\\\tVencimento: " << expiration
-		<< " , Taxa de sódio: " << sodium << "mg"
-		<< " , Contem glúten: " << (gluten? "Sim":"Não")
-		<< " , Contem lactose: " << (lactose? "Sim":"Não")
-		<< "]" << endl;
+	
 }
+
 
 #endif
