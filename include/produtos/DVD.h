@@ -48,12 +48,14 @@ class DVD : public Produto
 		int get_duration() { return duration; }	/**< Retorna a duração (em minutos) do DVD (int) */
 
 		// Sets
-		void set_title(const string &x) { title = x; }	/**< Altera o título do livro */
-		void set_genre(const string &x) { genre = x; }	/**< Altera o gênero do livro */
+		void set_title(const string &x) { title = x; }	/**< Altera o título do DVD */
+		void set_genre(const string &x) { genre = x; }	/**< Altera o gênero do DVD */
 		void set_duration(const int &x) { duration = x; }	/**< Altera a duração (em minutos) do DVD (int) */
 
 		// auxiliar da sobrecarga de extração
 		void print_it (std::ostream& out) const;	/**< Função que define como vai ser a impressão do produto */
+
+		friend class Produto;
 };
 
 // Implementações

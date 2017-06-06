@@ -14,7 +14,7 @@
 
 /**
 * @class Produto
-* @brief Tem as principais caracteríscitacas comuns a todos os produtos da loja.
+* @brief Classe abstrata contendo as principais características comuns aos produtos da loja.
 */
 class Produto
 {
@@ -53,7 +53,6 @@ class Produto
 		// Métodos
 
 		// Getter // Checar documentaçao
-
 		string get_type() { return product_type; }	/**< Retorna o tipo do produto (string) */
 		string get_provider() { return provider; }	/**< Retorna o nome do fornecedor do produto (string) */
 		float get_price() { return price; }	/**< Retorna preço do produto (float) */
@@ -75,9 +74,8 @@ class Produto
 		bool operator< (const Produto &x); /**< Verifica se este produto tem o seu valor do código de barras menor do que o outro */
 		
 		// auxiliar da sobrecarga de extração
-		virtual void print_it (std::ostream& out) const;	/**< Função que define como vai ser a impressão do produto */
+		virtual void print_it (std::ostream& out) const =0;	/**< Função virtual pura que define como vai ser a impressão das informações do produto */
 
-		
 		//friend &istream operator>> (istream &in, const Produto x);	/**< Sobrecarga do >> */
 };
 
