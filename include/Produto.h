@@ -21,23 +21,25 @@ class Produto
 	protected:
 		string product_type;	/**< Tipo de produto (bebida, cd,etc) */
 		string provider;	/**< Nome do fornecedor deste produto */
-		float price;	/**< Preço do produto em R$*/
+		float price;	/**< Preço do produto por unidade em R$*/
 		string barcode;	/**< Código de barras (13 números símbolo EAN-13)*/
 
+		int quantity;	/**< Quantidade deste produto em estoque */
+		
 	public:
 
 		/**
 		* @brief Constrói um objeto Produto sem especificar seus dados
 		*/
 		Produto()
-			: product_type(""), provider(""), price(0), barcode("0000000000000")
+			: product_type(""), provider(""), price(0), barcode("0000000000000"), quantity(0) 
 		{}
 		
 		/**
-		* @brief Constrói um Produto especificando seus atributos a partir de passagem de parâmetros
+		* @brief Constrói um Produto especificando seus atributos a partir de passagem de parâmetros (quantidade sempre inicia em 0)
 		*/
 		Produto(string produto, string fornecedor , float valor, string codigo)
-			: product_type(produto), provider(fornecedor), price(valor), barcode(codigo)
+			: product_type(produto), provider(fornecedor), price(valor), barcode(codigo), quantity(0)
 		{}
 
 		/**
@@ -45,7 +47,7 @@ class Produto
 		* @param original produto a ser copiado
 		*/
 		Produto( const Produto &origem)
-			: product_type(origem.product_type), provider(origem.provider), price(origem.price), barcode(origem.barcode)
+			: product_type(origem.product_type), provider(origem.provider), price(origem.price), barcode(origem.barcode), quantity(origem.quantity)
 		{}
 
 		virtual ~Produto(){}
@@ -57,12 +59,14 @@ class Produto
 		string get_provider() { return provider; }	/**< Retorna o nome do fornecedor do produto (string) */
 		float get_price() { return price; }	/**< Retorna preço do produto (float) */
 		string get_barcode() { return barcode; }	/**< Retorna o código de barras do produto (string) */
+		float get_quantity() { return quantity; }	/**< Retorna a quantidade de produtos (unidade) existentes */
 
 		// Setters	// Checar se funciona pra rvalue
 		void set_type( const string& x ) { product_type = x; }	/**< Modifica o tipo do produto (string) */
 		void set_provider( const string& x ) { provider = x; }	/**< Modifica o nome do fornecedor do produto (string) */
 		void set_price( const float& x ) { price = x; }	/**< Modifica preço do produto (float) */
 		void set_barcode( const string& x ) { barcode = x; } 	/**< Modifica o código de barras do produto (string) */
+		float set_quantity( const int& x ) { quantity = x; }	/**< Modifica a quantidade de produtos (unidade) existentes */
 
 		// Sobrecarga de operadores
 		float operator+ (const Produto &x);	/**< Retorna o resultado da adição do preço de dois produtos */
@@ -72,6 +76,8 @@ class Produto
 		bool operator== (const Produto &x);	/**< Verifica se dois produtos tem codigós de barra iguais */
 		bool operator> (const Produto &x); /**< Verifica se este produto tem o seu valor do código de barras maior do que o outro */
 		bool operator< (const Produto &x); /**< Verifica se este produto tem o seu valor do código de barras menor do que o outro */
+		bool operator<= (const Produto &x); /**< Verifica se este produto tem o seu valor do código de barras menor do que o outro */
+		bool operator>= (const Produto &x); /**< Verifica se este produto tem o seu valor do código de barras menor do que o outro */
 		
 		// auxiliar da sobrecarga de extração
 		virtual void print_it (std::ostream& out) const =0;	/**< Função virtual pura que define como vai ser a impressão das informações do produto */
@@ -144,6 +150,20 @@ bool Produto::operator>( const Produto &x){
 */
 bool Produto::operator<( const Produto &x){
 	return (barcode < x.barcode);
+}
+
+/**
+* @param x Referência para o Produto a ter seu código de barras comparado
+*/
+bool Produto::operator>= ( const Produto &x){
+	return ((barcode > x.barcode) or (barcode == x.barcode));
+}
+
+/**
+* @param x Referência para o Produto a ter seu código de barras comparado
+*/
+bool Produto::operator<= ( const Produto &x){
+	return ((barcode < x.barcode) or (barcode == x.barcode));
 }
 
 #include "Produto_tipos.h"

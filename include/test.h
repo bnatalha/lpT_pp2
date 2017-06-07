@@ -14,6 +14,7 @@
 #include "myLista.h"
 #include "Produto.h"
 #include "Produto_tipos.h"
+#include "Grupo_Produto.h"
 
 #include <list>
 using std::list;
@@ -98,34 +99,6 @@ void test1()
 	// Uma lista de Estoque pra cada tipo de produto.
 }
 
-void test2_Grupo()
-{
-
-	/*
-	Grupo_Produto<CD> m_cds;
-	//Grupo_Produto<Salgado> m_salga;
-
-	CD cd1("Superunknow","Soundgarden","Rock");
-	CD cd2("Melhor do que parece","O Terno","Rock");
-	CD cd3("Black album","Metallica","Infantil");
-
-	cd1.set_barcode("001");
-	cd1.set_provider("Sony Music");
-	cd1.set_price(14.3);
-
-	cd2.set_barcode("002");
-	cd2.set_provider("Brasilzil");
-	cd2.set_price(10);
-
-	cd3.set_barcode("003");
-	cd3.set_provider("Bombom Produções");
-	cd3.set_price(1.99);
-
-	m_cds.register(cd1);
-	*/
-
-}
-
 /**
 * @brief Testa operador== de myLista
 */
@@ -207,5 +180,74 @@ void test_lista_2()
 		cout << e << " ";
 	cout << "]" << endl;
 }
+
+void test2_Grupo_1()
+{
+	Grupo_Produto<CD> m_cds;
+	//Grupo_Produto<Salgado> m_salga;
+
+	CD cd0;
+	CD cd1("Superunknow","Soundgarden","Rock");
+	CD cd2("Melhor do que parece","O Terno","Rock");
+	CD cd3("Black album","Metallica","Infantil");
+
+	cd1.set_barcode("001");
+	cd1.set_provider("Sony Music");
+	cd1.set_price(14.3);
+
+	cd2.set_barcode("002");
+	cd2.set_provider("Brasilzil");
+	cd2.set_price(10);
+
+	cd3.set_barcode("003");
+	cd3.set_provider("Bombom Produções");
+	cd3.set_price(1.99);
+
+	// testando register_P
+	m_cds.register_P(cd1);
+	m_cds.register_P(cd2);
+	m_cds.register_P(cd3);
+	m_cds.register_P(cd1);
+	m_cds.register_P(cd2);
+	m_cds.register_P(cd2);
+	m_cds.register_P(cd3);
+	m_cds.register_P(cd2);
+	m_cds.print_P(cout);
+	cout << endl;
+
+	Grupo_Produto<CD>::it_P it =  m_cds.search_P(cd0);	// it_p recebe a posição do primeiro CD no grupo
+
+	// testando remove_P
+	m_cds.remove_all_P(cd2);
+	m_cds.remove_this_P(cd1);
+	m_cds.remove_this_P(it);
+	m_cds.remove_this_P(cd0);	// Remover um item que não existe da lista
+	m_cds.print_P(cout);
+}
+
+void test2_Grupo_modify()
+{
+	Grupo_Produto<CD> m_cds;
+
+	CD cd0;
+	CD cd1("Superunknow","Soundgarden","Rock");
+	CD cd2("Melhor do que parece","O Terno","Rock");
+	CD cd3("Black album","Metallica","Infantil");
+
+	cd1.set_barcode("001");
+	cd1.set_provider("Sony Music");
+	cd1.set_price(14.3);
+
+	cd2.set_barcode("002");
+	cd2.set_provider("Brasilzil");
+	cd2.set_price(10);
+
+	cd3.set_barcode("003");
+	cd3.set_provider("Bombom Produções");
+	cd3.set_price(1.99);
+
+	//m_cds.modify_P
+}
+
 
 #endif

@@ -30,8 +30,6 @@ template < typename T>
 //void myLista<T>::push_sorted( const T& elem )
 void myLista<T>::push_sorted( T elem )
 {
-//	if( existent_element(elem) == false )	// Se o elemento a ser acrescentado na lista não já pertencer à ela
-//	{
 		myNode *new_node = new myNode(elem);	// Cria um novo nó dinamicamente com o elemento a ser adicionado
 
 		if ( empty() )	 // Se for o primeiro nó da lista (sentinelas não contam)
@@ -44,14 +42,14 @@ void myLista<T>::push_sorted( T elem )
 		
 		else // Se já existir algum elemento na lista
 		{
-			if(elem > sentinela_head->elemento)	// Se o elemento a ser acrescentado for maior do que o que está na frente da lista
+			if(elem >= sentinela_head->elemento)	// Se o elemento a ser acrescentado for maior ou igual do que o que está na frente da lista
 			{
 				delete new_node;	// Não vai ser mais necessário o nó criado graças as função push_front()
 				push_front(elem);	// Coloca o elemento na frente da Lista
 			}
-			else if(sentinela_tail->elemento > elem)	// Se o elemento do fim da lista for maior do que o que vai ser acrescentado
+			else if(sentinela_tail->elemento >= elem)	// Se o elemento do fim da lista for maior ou igual do que o que vai ser acrescentado
 			{
-				delete new_node;	// Não vai ser mais necessário onó criado graças as função push_back()
+				delete new_node;	// Não vai ser mais necessário o nó criado graças as função push_back()
 				push_back(elem);	// Coloca o elemento no final da lista
 			}
 			else if(sentinela_head->elemento > elem and sentinela_tail->elemento < elem )	// else
@@ -60,7 +58,7 @@ void myLista<T>::push_sorted( T elem )
 
 				_pointer = sentinela_head;	// Atribui a _pointer um ponteiro para o primeiro nó da lista
 
-				while(elem < _pointer->elemento)	// Até encontrar um nó com um elemento que seja menor do que o que será acrescentado a lista
+				while(elem <= _pointer->elemento)	// Até encontrar um nó com um elemento que seja menor do que o que será acrescentado a lista
 					_pointer = _pointer->proximo;	// Avança o _pointer em direção a fim da lista 
 
 				// Associa o new_node com os nós proximos a ele
@@ -74,7 +72,6 @@ void myLista<T>::push_sorted( T elem )
 				qtd_elementos++;	// Total de elementos da lista aumenta	
 			}
 		}
-//	}
 }
 
 /**
@@ -175,6 +172,63 @@ bool myLista<T>::pop_front()
 	qtd_elementos--;	// Total de elementos da lista diminui
 
 	return true;	
+}
+
+/**
+* @brief Destroi o nó apontado por um iterator
+* @param it iterator da lista que aponta qual nó será destruído
+*/
+template < typename T>
+void myLista<T>::erase( myLista<T>::iterator &it )
+{
+	myNode *_pointer = (it.atual);	// _pointer aponta para o mesmo nó que o iterator it;
+	myNode *_destruir;	// Ponteiro para o nó a ser destruído.
+	
+	it++;	// iterator avança;
+
+	// Verificando posição do nó apontado pelo ponteiro na lista
+	if(_pointer->anterior == NULL and _pointer->proximo == NULL)
+	// H-> [val] <-T (Se só existe este nó na lista)
+	{
+		pop_front();
+		_pointer = NULL;
+	}
+	else if(_pointer->anterior != NULL and _pointer->proximo == NULL)	// Já percorreu toda a lista
+	// H-> [n_0]...[n_k-1][val] <-T (Se só existe nó anterior a este e não depois dele)
+	{
+		_pointer = _pointer->proximo;	// Avança o ponteiro para o fim da lista
+		pop_back();
+		//_pointer = NULL;
+	}
+	else if(_pointer->anterior == NULL and _pointer->proximo != NULL)
+	// H-> [val][n_1]...[n_k] <-T Se só existe nó depois deste e não antes dele)
+	{	
+		//_pointer é igual a head
+		_pointer = _pointer->proximo;	// Avança o ponteiro para o fim da lista
+		pop_front();	// Destroi o elemento (supostamente no início da lista)
+
+	}
+	else if(_pointer->anterior != NULL and _pointer->proximo != NULL)
+	// H-> [n_0]...[n_z][val][n_z+2]...[n_k] <-T (Se existe nó antes e depois deste)
+	{
+		// Inicialmente: [x]-[val]-[y],	onde "-" indica que estão conectados em ambos sentidos (anterior e proximo)
+				
+		_pointer->anterior->proximo = _pointer->proximo;	// Pega o nó anterior ao selecionado e o conecta com o próximo do atual
+		// [x]->[z]  [x]<-[val]-[z]
+				
+		_pointer->proximo->anterior = _pointer->anterior;	// Pega o nó depois do selecionado e o conecta com o anterior do selecionado
+		// [x]-[z] [x]<-[val]->[z]
+				
+		_destruir = _pointer;	// Atribui ao ponteiro destrutor qual o nó a ser destruído
+		// _destruir -> [val]
+				
+		_pointer = _pointer->proximo; //	Avança o ponteiro em direção ao fim da lista
+		// _pointer -> [val]
+				
+			delete _destruir; // Destrói o nó [val]
+
+		qtd_elementos--; // Diminui o contador de elementos da lista
+	}
 }
 
 #endif

@@ -51,15 +51,19 @@ class Grupo_Produto
 		int list_size(){ return l_produtos.size(); }
 		
 		bool exist_P( const tipo_P& prod );	/**< Retorna se existe o produto buscado */
-		myLista<tipo_P>::iterator search_P( const tipo_P& prod ); 	/**< Procura o produto por alguma de sua característica(?) */
+		typename myLista<tipo_P>::iterator search_P( const tipo_P& prod ); 	/**< Procura o produto por alguma de sua característica(?) */
 		
 		// Setters	// Checar se funciona pra rvalue
-		void register_P( const tipo_P& prod ) { l_produtos.push_sorted(prod); }	/**< Adiciona um produto tipo_P a lista do grupo */
-		//void modify_P( const tipo_P& prod );
-		void remove_P( const tipo_P& prod );
+		void register_P( const tipo_P& prod );	/**< Adiciona um produto tipo_P a lista do grupo */
+		void modify_P( tipo_P& prod );
+		void remove_all_P( const tipo_P& prod ); /**< Remove todos os produtos com o mesmo código de barras que 'prod' da lista */
+		void remove_this_P( const tipo_P& prod ); /**< Remove o primeiro produto com o mesmo código de barras que 'prod' da lista */
+		void remove_this_P( typename myLista<tipo_P>::iterator& it ); /**< Remove o primeiro produto com o mesmo código de barras que 'prod' da lista */
 		void print_P( std::ostream& out );
 		
 		//friend &istream operator>> (istream &in, const Produto x);	/**< Sobrecarga do >> */
+
+		typedef typename myLista<tipo_P>::iterator it_P;
 };
 
 // ============ Implementação ============
@@ -68,56 +72,84 @@ template <typename tipo_P>
 bool Grupo_Produto<tipo_P>::exist_P( const tipo_P& prod )	// Procura pelo codigo de barras
 {
 	for(auto &e: l_produtos)
-		if( e == prod ) return true
+		if( e == prod ) return true;
 
 	return false;
+}
+
+template <typename tipo_P>
+void Grupo_Produto<tipo_P>::register_P( const tipo_P& prod )
+{
+	typename myLista<tipo_P>::iterator it  = search_P(prod);
+
+	if (it != l_produtos.end())	// Se o produto não for registrado
+		l_produtos.push_sorted(it);	// Registra
+	else
+		*(it).set_quantity(*(it).get_quantity() + 1);	// Aumenta a quantidade de unidades deste produto em 1;
 }
 
 /**
 * @return Interator pra localização do produto procurado na lista. Se o iterator for igual ao fim da lista, o produto buscado não foi achado.
 */
 template <typename tipo_P>
-myLista<tipo_P>::iterator Grupo_Produto<tipo_P>::search_P( const tipo_P& prod )
+typename myLista<tipo_P>::iterator Grupo_Produto<tipo_P>::search_P( const tipo_P& prod )
 {
-	myLista<tipo_P>::iterator my_p = l_produtos.begin();
+	typename myLista<tipo_P>::iterator it = l_produtos.begin();
 	
 	for( ; it != l_produtos.end() ; it++ )
 	{
-		if( *(it) == prod ) break;
+		if( *(it) == prod ) break;	// encontrou*
 	}
 
-	// se it == l_produtos.end(), não achou. do contratio achou.
+	return it;	// *se it == l_produtos.end(), não encontrou.
 }
 
 template <typename tipo_P>
-bool Grupo_Produto<tipo_P>::remove_P( const tipo_P& prod )
+void Grupo_Produto<tipo_P>::remove_all_P( const tipo_P& prod )
 {
-	l_produtos(prod);
+	l_produtos.remove(prod);
 }
 
 template <typename tipo_P>
-bool Grupo_Produto<tipo_P>::print_P( const tipo_P& prod )
+void Grupo_Produto<tipo_P>::remove_one_P( const tipo_P& prod )
 {
-	cout << "{" << endl;
+	typename myLista<tipo_P>::iterator it  = search_P(prod);
+
+	if (it != l_produtos.end())
+		*(it).set_quantity(*(it).get_quantity() - 1);	// Diminui em 1 unidade a quantidade de produtos apontados por 'it'
+}
+
+template <typename tipo_P>
+void Grupo_Produto<tipo_P>::remove_this_P( typename myLista<tipo_P>::iterator& it )
+{
+	if (it != l_produtos.end())
+		*(it).set_quantity(*(it).get_quantity() - 1);	// Diminui em 1 unidade a quantidade de produtos apontados por 'it'
+}
+
+template <typename tipo_P>
+void Grupo_Produto<tipo_P>::print_P( std::ostream& out )
+{
+	out << "{" << endl;
 	for (auto &e: l_produtos)
 	{
-		e->print_it(cout);
+		e.print_it(out);
 		cout << endl;
 	}
-	cout << "}" << endl;
+	out << "}" << endl;
 }
 
 
-/*
+// MODIFY ========================
+
 template <>
-void Grupo_Produto<CD>::modify_P( const CD& prod )
+void Grupo_Produto<CD>::modify_P( CD& prod )
 {
 	int operation = 1000;
 	while( operation != 0)
 	{
-		string new_;
+		string new_s;
 
-		cout << "O que será modificado do CD ("<< prod.get_barcode() <<")?" << endl;
+		cout << "O que será modificado do CD ("<< prod.get_barcode() <<")?" << endl
 			 << "(1) nome;"
 			 << "(2) artista;"
 			 << "(3) estilo;"
@@ -132,10 +164,10 @@ void Grupo_Produto<CD>::modify_P( const CD& prod )
 			cout << "Modificar nome. Atual: \"" << prod.get_name() << "\""
 				<< endl << "Insira novo nome. >>" ;
 
-			getline(cin, new_);	// Armazena o novo nome em 'new_'
+			getline(cin, new_s);	// Armazena o novo nome em 'new_s'
 			cin.ignore();
 
-			prod.set_name(new_);	// Modifica o nome para o conteudo de 'new_'
+			prod.set_name(new_s);	// Modifica o nome para o conteudo de 'new_s'
 
 			cout << "nome: \"" << prod.get_name() << "\"" << endl;
 		}
@@ -143,10 +175,10 @@ void Grupo_Produto<CD>::modify_P( const CD& prod )
 			cout << "Modificar artista. Atual: \"" << prod.get_artist() << "\""
 				<< endl << "Insira novo artista. >>" ;
 			
-			getline(cin, new_);	// Armazena o novo artista em 'new_'
+			getline(cin, new_s);	// Armazena o novo artista em 'new_s'
 			cin.ignore();
 
-			prod.set_artist(new_);	// Modifica o artista para o conteudo de 'new_'
+			prod.set_artist(new_s);	// Modifica o artista para o conteudo de 'new_s'
 
 			cout << "artista: \"" << prod.get_artist() << "\"" << endl;
 		}
@@ -154,10 +186,10 @@ void Grupo_Produto<CD>::modify_P( const CD& prod )
 			cout << "Modificar estilo. Atual: \"" << prod.get_style() << "\""
 				<< endl << "Insira novo estilo. >>" ;
 			
-			getline(cin, new_);	// Armazena o novo estilo em 'new_'
+			getline(cin, new_s);	// Armazena o novo estilo em 'new_s'
 			cin.ignore();
 
-			prod.set_style(new_);	// Modifica o estilo para o conteudo de 'new_'
+			prod.set_style(new_s);	// Modifica o estilo para o conteudo de 'new_s'
 
 			cout << "estilo: \"" << prod.get_style() << "\"" << endl;			
 		}
@@ -165,15 +197,16 @@ void Grupo_Produto<CD>::modify_P( const CD& prod )
 }
 
 template <>
-void Grupo_Produto<Salgado>::modify_P( const Salgado& prod )
+void Grupo_Produto<Salgado>::modify_P( Salgado& prod )
 {
 	int operation = 1000;
 	while( operation != 0)
 	{
-		string new_;
+		string new_s;
+		float new_f;
 		char u;
 
-		cout << "O que será modificado do CD ("<< prod.get_barcode() <<")?" << endl;
+		cout << "O que será modificado do CD ("<< prod.get_barcode() <<")?" << endl
 			 << "(1) sódio;"
 			 << "(2) glutem;"
 			 << "(3) lactose;"
@@ -186,17 +219,17 @@ void Grupo_Produto<Salgado>::modify_P( const Salgado& prod )
 		if(operation == 1){
 
 			cout << "Modificar sódio. Atual: \"" << prod.get_sodium() << "\""
-				<< endl << "Insira novo nome. >>" ;
+				<< endl << "Insira novo sódio. >>" ;
 
-			getline(cin, new_);	// Armazena o novo sódio em 'new_'
+			cin >> new_f;	// Armazena o novo sódio em 'new_'
 			cin.ignore();
 
-			prod.set_sodium(new_);	// Modifica o sódio para o conteudo de 'new_'
+			prod.set_sodium(new_f);	// Modifica o sódio para o conteudo de 'new_'
 
 			cout << "sódio: \"" << prod.get_sodium() << "\"" << endl;
 		}
 		if(operation == 2){
-			cout << "Modificar glúten. Atual: \"" << (prod.get_gluten()?"":"NAO") <<  << "contém\"."
+			cout << "Modificar glúten. Atual: \"" << (prod.get_gluten()?"":"NAO") << "contém\"."
 				<< endl << "Alterar para \"" << (prod.get_gluten()?"NAO":"") << " contem\" ? (letra 'y' para 'sim' e letra 'n' para não). >>" ;
 			
 			cin >> u;	// Armazena o novo glúten em 'u'
@@ -205,10 +238,10 @@ void Grupo_Produto<Salgado>::modify_P( const Salgado& prod )
 			// Modifica o glúten
 			if( u == 'y')	prod.set_gluten(!prod.get_gluten());
 
-			cout << "glúten:  \"" << (prod.get_gluten()?"":"NAO") <<  << "contém\"."
+			cout << "glúten:  \"" << (prod.get_gluten()?"":"NAO") << "contém\"."<< endl;
 		}
 		if(operation == 3){
-			cout << "Modificar lactose. Atual: \"" << (prod.get_lactose()?"":"NAO") <<  << "contém\"."
+			cout << "Modificar lactose. Atual: \"" << (prod.get_lactose()?"":"NAO") << "contém\"."
 				<< endl << "Alterar para \"" << (prod.get_lactose()?"NAO":"") << " contem\" ? (letra 'y' para 'sim' e letra 'n' para não). >>" ;
 			
 			cin >> u;	// Armazena o novo lactose em 'u'
@@ -217,14 +250,14 @@ void Grupo_Produto<Salgado>::modify_P( const Salgado& prod )
 			// Modifica o lactose
 			if( u == 'y')	prod.set_lactose(!prod.get_lactose());
 
-			cout << "lactose:  \"" << (prod.get_lactose()?"":"NAO") <<  << "contém\"."			
+			cout << "lactose:  \"" << (prod.get_lactose()?"":"NAO") << "contém\"."<< endl;			
 		}
 	}
 }
 
-template <tipo_P>
-void Grupo_Produto<tipo_P>::modify_P( const tipo_P& prod )
+template < typename tipo_P>
+void Grupo_Produto<tipo_P>::modify_P( tipo_P& prod )
 {}
-*/
 
+ 
 #endif
