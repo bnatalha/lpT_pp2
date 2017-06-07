@@ -1,6 +1,6 @@
 /**
 * @file
-* @brief Implementação dos métodos remove() e existent_element() de myPilha
+* @brief Implementação dos métodos remove() e exist() de myPilha
 * @author Natália Azevedo de Brito (https://github.com/bnatalha/)
 * @since 14/05/2017
 * @date 21/05/2017
@@ -80,7 +80,7 @@ void myLista<T>::remove(const T& val)
 * @param elem Valor buscado para ser removido
 */
 template < typename T>
-bool myLista<T>::existent_element(const T& elem)
+bool myLista<T>::exist(const T& elem)
 {
 	myNode * _pointer = sentinela_head;	// Cria ponteiro para o início da lista, a partir da sentinela da cabeça
 

@@ -39,6 +39,13 @@ class myLista
 			myNode(const T& data, myNode* prevNode = NULL, myNode* nextNode = NULL)
 				:	elemento(data), anterior(prevNode), proximo(nextNode)
 			{}
+
+			/**
+			* @brief Construtor de myNode
+			*/
+			myNode(T& data, myNode* prevNode = NULL, myNode* nextNode = NULL)
+				:	elemento(data), anterior(prevNode), proximo(nextNode)
+			{}
 		};
 
 		myNode *sentinela_head;	/**< Ponteiro para o nó do início (head) da lista */
@@ -158,11 +165,12 @@ class myLista
 		void remove(const T& val);
 		void unique();
 		// > Auxiliares dos modificadores
-		bool existent_element(const T& elem);
+		bool exist(const T& elem);
 		//sort();
 
 		// Sobrecarga de operadores
 		bool operator== ( myLista<T> l_direita);
+		bool operator!= ( myLista<T> l_direita);
 		myLista<T>& operator= (const myLista<T> copy);
 		// PARA TESTE: sobrecarga operador <<
 		template <typename foo>
@@ -173,7 +181,7 @@ class myLista
 
 /**
 * @brief Sobrecarga do operador "==". Checa se duas listas são iguais.
-* @param copy Lista a ser comparada
+* @param l_direita Lista a ser comparada
 */
 template <typename T>
 bool myLista<T>::operator== ( myLista<T> l_direita)
@@ -200,20 +208,32 @@ bool myLista<T>::operator== ( myLista<T> l_direita)
 }
 
 /**
+* @brief Sobrecarga do operador "!=". Checa se duas listas são diferente.
+* @param l_direita Lista a ser comparada
+*/
+template <typename T>
+bool myLista<T>::operator!= ( myLista<T> l_direita)
+{
+	return ( not( *this == l_direita ) );
+}
+
+/**
 * @brief Sobrecarga do operador "="
 * @param copy Lista a ser copiada
 */
 template <typename T>
 myLista<T>& myLista<T>::operator= (const myLista<T> copy)
 {
-	// EXTRA !: checar se listas são iguais (operator ==) antes da atribuição
-	clear();	// Destroi os elementos da lista que vai ser modificada
-	
-	myNode *_pointer = copy.sentinela_head;	// Cria um ponteiro não constante para o início da lista a ser copiada
-	while( _pointer != NULL )	// Enquanto ponteiro não chegar no fim da lista a ser copiada (NULL)
+	if ( *this != copy )
 	{
-		push_back(_pointer->elemento);	// Acrescenta o elemento do nó da vez ao fim desta lista
-		_pointer = _pointer->proximo;	// Ponteiro anda no sentido do fim da lista a ser copida
+		clear();	// Destroi os elementos da lista que vai ser modificada
+		
+		myNode *_pointer = copy.sentinela_head;	// Cria um ponteiro não constante para o início da lista a ser copiada
+		while( _pointer != NULL )	// Enquanto ponteiro não chegar no fim da lista a ser copiada (NULL)
+		{
+			push_back(_pointer->elemento);	// Acrescenta o elemento do nó da vez ao fim desta lista
+			_pointer = _pointer->proximo;	// Ponteiro anda no sentido do fim da lista a ser copida
+		}
 	}
 
 	return *this;

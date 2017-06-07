@@ -203,6 +203,8 @@ void test2_Grupo_1()
 	cd3.set_provider("Bombom Produções");
 	cd3.set_price(1.99);
 
+	cout << "here" << endl;
+
 	// testando register_P
 	m_cds.register_P(cd1);
 	m_cds.register_P(cd2);
@@ -215,13 +217,54 @@ void test2_Grupo_1()
 	m_cds.print_P(cout);
 	cout << endl;
 
-	Grupo_Produto<CD>::it_P it =  m_cds.search_P(cd0);	// it_p recebe a posição do primeiro CD no grupo
+	Grupo_Produto<CD>::it_P it1 =  m_cds.search_P(cd1);	// it_p recebe a posição do primeiro CD no grupo
+	Grupo_Produto<CD>::it_P it2 =  m_cds.search_P(cd2);	//
 
-	// testando remove_P
-	m_cds.remove_all_P(cd2);
-	m_cds.remove_this_P(cd1);
-	m_cds.remove_this_P(it);
-	m_cds.remove_this_P(cd0);	// Remover um item que não existe da lista
+	// Testando unregister
+	m_cds.unregister_P(it1);
+
+	// Testando price
+	cout << "TOTAL preço: "<< m_cds.price_P() << endl;
+	cout << "TOTAL quant: "<< m_cds.size_P() << endl;
+
+	// Testando iterator
+	cout << "preço it2: " << (*it2).get_quantity() * (*it2).get_price() << endl;
+	(*it2).set_quantity(1);
+	cout << "preço it2: " << (*it2).get_quantity() * (*it2).get_price() << endl;
+	(*it2).set_quantity(4);
+	cout << "preço it2: " << (*it2).get_quantity() * (*it2).get_price() << endl;
+
+	cout << "TOTAL preço: "<< m_cds.price_P() << endl;
+	cout << "TOTAL quant: "<< m_cds.size_P() << endl;
+
+	// Testando construtor de GRUPO_PRODUTO
+	cout << "\nTestando construtor cópia." << endl;
+	Grupo_Produto<CD> a_cds(m_cds);	// criando grupo a
+	cout << "m = " << endl;
+	m_cds.print_P(cout);	// printando m
+	cout << endl;
+	cout << "a = " << endl;
+	a_cds.print_P(cout);	// printando a
+	cout << endl;
+
+	// Testando operador=
+	cout << "\nTestando operador=." << endl;
+	Grupo_Produto<CD> b_cds;	// criando grupo b
+	b_cds = a_cds;	// atribuido grupo a ao grupo b
+	b_cds.register_P( cd1 );	// modificando b
+	cout << "b = " << endl;
+	b_cds.print_P(cout);	// printando b
+	cout << endl;
+
+	// Testando operador== GRUPO_PRODUTO
+	cout << "\nTestando operador==." << endl;
+	cout << "a e a" << (a_cds == a_cds?" ":" não ")<< "iguais." << endl;
+	cout << "m e a" << (m_cds == a_cds?" ":" não ")<< "iguais." << endl;
+	cout << "a e m" << (a_cds == m_cds?" ":" não ")<< "iguais." << endl;
+	cout << "a e b" << (a_cds == b_cds?" ":" não ")<< "iguais." << endl;
+	cout << "b e a" << (b_cds == a_cds?" ":" não ")<< "iguais." << endl;
+
+	cout << "m = " << endl;
 	m_cds.print_P(cout);
 }
 
@@ -249,5 +292,9 @@ void test2_Grupo_modify()
 	//m_cds.modify_P
 }
 
+void test3_bau()
+{
+
+}
 
 #endif

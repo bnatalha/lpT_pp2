@@ -11,6 +11,7 @@ protected:
 public:
 	Base(int vCodigo);
 	virtual void imprime()=0;
+	virtual void foo() { cout << "I'm a foo." << endl; }
 };
 
 Base::Base(int vCodigo):

@@ -41,6 +41,15 @@ class CD : public Produto
 		{}
 
 		/**
+		* @brief Constrói um objeto CD copiando de um outro obejto CD
+		*/
+		CD(const CD& orig) 
+			//: product_type(orig.product_type), provider(orig.provider), price(orig.price), barcode(orig.barcode), quantity(orig.quantity),
+			: Produto( orig.get_type(), orig.get_provider(), orig.get_price(), orig.get_barcode()),
+			name(orig.name), artist(orig.artist), style(orig.style)
+		{ set_quantity(orig.get_quantity()); }
+
+		/**
 		* @brief Destrutor virtual de CD
 		*/
 		virtual ~CD(){}
@@ -73,6 +82,7 @@ void CD::print_it(std::ostream& out) const
 		<< ", Fornecedor: " << provider
 		<< ", Preço: R$" << price	// Trocar '.' por ',' na impressão
 		<< ", Código de Barras: " << barcode
+		<< ", Quantidade: " << quantity
 		<< "\n/\\\tTítulo: \"" << name << "\""
 		<< " , Artista: " << artist
 		<< " , Estilo: " << style

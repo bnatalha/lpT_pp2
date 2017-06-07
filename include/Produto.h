@@ -55,29 +55,30 @@ class Produto
 		// Métodos
 
 		// Getter // Checar documentaçao
-		string get_type() { return product_type; }	/**< Retorna o tipo do produto (string) */
-		string get_provider() { return provider; }	/**< Retorna o nome do fornecedor do produto (string) */
-		float get_price() { return price; }	/**< Retorna preço do produto (float) */
-		string get_barcode() { return barcode; }	/**< Retorna o código de barras do produto (string) */
-		float get_quantity() { return quantity; }	/**< Retorna a quantidade de produtos (unidade) existentes */
+		string get_type() const { return product_type; }	/**< Retorna o tipo do produto (string) */
+		string get_provider() const { return provider; }	/**< Retorna o nome do fornecedor do produto (string) */
+		float get_price() const { return price; }	/**< Retorna preço do produto (float) */
+		string get_barcode() const { return barcode; }	/**< Retorna o código de barras do produto (string) */
+		float get_quantity() const { return quantity; }	/**< Retorna a quantidade de produtos (unidade) existentes */
 
 		// Setters	// Checar se funciona pra rvalue
 		void set_type( const string& x ) { product_type = x; }	/**< Modifica o tipo do produto (string) */
 		void set_provider( const string& x ) { provider = x; }	/**< Modifica o nome do fornecedor do produto (string) */
 		void set_price( const float& x ) { price = x; }	/**< Modifica preço do produto (float) */
 		void set_barcode( const string& x ) { barcode = x; } 	/**< Modifica o código de barras do produto (string) */
-		float set_quantity( const int& x ) { quantity = x; }	/**< Modifica a quantidade de produtos (unidade) existentes */
+		void set_quantity( const int& x ) { quantity = x; }	/**< Modifica a quantidade de produtos (unidade) existentes */
 
 		// Sobrecarga de operadores
 		float operator+ (const Produto &x);	/**< Retorna o resultado da adição do preço de dois produtos */
 		friend float operator+ (float y, const Produto &x);	/**< Retorna o resultado da adição de um float com o preço do produto */
 		float operator- (const Produto &x);	/**< Retorna o resultado da subtração do preço de dois produtos */
 		friend float operator- (float y, const Produto &x);	/**< Retorna o resultado da subtração de um float com o preço do produto */
-		bool operator== (const Produto &x);	/**< Verifica se dois produtos tem codigós de barra iguais */
-		bool operator> (const Produto &x); /**< Verifica se este produto tem o seu valor do código de barras maior do que o outro */
-		bool operator< (const Produto &x); /**< Verifica se este produto tem o seu valor do código de barras menor do que o outro */
-		bool operator<= (const Produto &x); /**< Verifica se este produto tem o seu valor do código de barras menor do que o outro */
-		bool operator>= (const Produto &x); /**< Verifica se este produto tem o seu valor do código de barras menor do que o outro */
+		virtual bool operator== (const Produto &x);	/**< Verifica se dois produtos tem codigós de barra iguais */
+		virtual bool operator!= (const Produto &x);	/**< Verifica se dois produtos tem codigós de barra diferentes */
+		virtual bool operator> (const Produto &x); /**< Verifica se este produto tem o seu valor do código de barras maior do que o outro */
+		virtual bool operator< (const Produto &x); /**< Verifica se este produto tem o seu valor do código de barras menor do que o outro */
+		virtual bool operator>= (const Produto &x); /**< Verifica se este produto tem o seu valor do código de barras maior ou igual do que o outro */
+		virtual bool operator<= (const Produto &x); /**< Verifica se este produto tem o seu valor do código de barras menor ou igual do que o outro */
 		
 		// auxiliar da sobrecarga de extração
 		virtual void print_it (std::ostream& out) const =0;	/**< Função virtual pura que define como vai ser a impressão das informações do produto */
@@ -95,7 +96,7 @@ class Produto
 */
 float Produto::operator+(const Produto &x)
 {
-	return( this->price + x.price);
+	return( (this->price * this->quantity ) + ( x.price * x.quantity )) ;
 }
 
 /**
@@ -105,7 +106,7 @@ float Produto::operator+(const Produto &x)
 */
 float operator+ (float y, const Produto &x)
 {
-	return( y + x.price);
+	return( y + ( x.price * x.quantity ) );
 }
 
 /**
@@ -131,11 +132,20 @@ float operator-(float y, const Produto &x)
 
 /**
 * @param x Referência para o Produto a ser comparado
-* @returns Se os produtos comparadas tem o mesmo código de barras ou não
+* @returns Se os produtos comparados tem códigos de barras iguais
 */
 bool Produto::operator== (const Produto &x)
 {
 	return (this->barcode == x.barcode);
+}
+
+/**
+* @param x Referência para o Produto a ser comparado
+* @returns Se os produtos comparados tem códigos de barras diferentes
+*/
+bool Produto::operator!= (const Produto &x)
+{
+	return (this->barcode != x.barcode);
 }
 
 /**

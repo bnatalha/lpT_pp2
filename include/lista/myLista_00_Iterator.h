@@ -196,7 +196,7 @@ typename myLista<T>::iterator& myLista<T>::iterator::operator--()
 template < typename T >
 typename myLista<T>::iterator& myLista<T>::iterator::operator=( const iterator& it_direita )
 {
-	this->atual = it_direita->atual;
+	this->atual = it_direita.atual;
 	return *this;
 }
 

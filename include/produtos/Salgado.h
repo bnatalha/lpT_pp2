@@ -76,6 +76,7 @@ void Salgado::print_it(std::ostream& out) const
 		<< ", Fornecedor: " << provider
 		<< ", Preço: R$" << price	// Trocar '.' por ',' na impressão
 		<< ", Código de Barras: " << barcode
+		<< ", Quantidade: " << quantity
 		<< "\n/\\\tVencimento: " << expiration
 		<< " , Taxa de sódio: " << sodium << "mg"
 		<< " , Contem glúten: " << (gluten? "Sim":"Não")

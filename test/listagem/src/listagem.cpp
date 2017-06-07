@@ -28,5 +28,9 @@ int main(int argc, char const *argv[])
 		(*it)->imprime();
 	}
 
+	cout << "NEXT" << endl;
+
+	a1.foo();
+
 	return 0;
 }

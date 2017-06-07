@@ -36,7 +36,7 @@ typename myLista<T>::iterator myLista<T>::begin()
 template < typename T>
 typename myLista<T>::const_iterator myLista<T>::end() const
 {
-	typename myLista<T>::const_iterator cit(sentinela_tail->proximo);	// NULL
+	typename myLista<T>::const_iterator cit(NULL);	// NULL = sentinela_tail->proximo
 	return cit;
 }
 
@@ -46,7 +46,7 @@ typename myLista<T>::const_iterator myLista<T>::end() const
 template < typename T>
 typename myLista<T>::iterator myLista<T>::end()
 {
-	typename myLista<T>::iterator cit(sentinela_tail->proximo);	// NULL
+	typename myLista<T>::iterator cit(NULL);	// NULL = sentinela_tail->proximo
 	return cit;
 }
 
