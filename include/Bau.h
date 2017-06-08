@@ -20,8 +20,9 @@
 class Bau
 {
 	private:
-		Seccao<CD> l_cds; /**< Grupo de Produtos do tipo CD  */
-		Seccao<Salgado> l_salga;	/**< Grupo de Produtos do tipo CD */
+		Seccao<CD> s_cds; /**< Seccao do tipo CD  */
+		Seccao<Salgado> s_sal;	/**< Seccao do tipo CD */
+		//Seccao<Salgado> s_doc;	
 
 		// doce etc
 
@@ -35,14 +36,14 @@ class Bau
 		/**
 		* @brief Constrói um objeto Bau como uma cópia de outro Bau já existente
 		*/
-		Bau( const Bau& origem) 
-			: l_cds(origem.l_cds), l_salga(origem.l_salga)
+		Bau( const Bau& orig) 
+			: s_cds(orig.s_cds), s_sal(orig.s_sal)
 		{}
 
 		/**
-		* @brief Destrutor virtual de Bau
+		* @brief Destrutor de Bau
 		*/
-		virtual ~Bau(){}
+		~Bau(){}
 
 		// Métodos
 
@@ -50,20 +51,34 @@ class Bau
 		void search_provider(string& prov);	/**< Busca e imprime todos os produtos de um fornecedor */
 		
 		// Setters
-		void absorb_B( Bau& origem);	/**<  Move todos os itens de 'origem' () para o Bau que chamou está função () */
-		void clear_B( Bau& origem);	/**<  Remove todos os items de um Baú */
+		void absorb_B( Bau& orig);	/**<  Move todos os itens de 'orig' () para o Bau que chamou está função () */
+		void clear_B( );	/**<  Remove todos os items deste Bau */
 
 		// save (?)
 		// load (?)
 		
-
+		// Sobrecarga de operadores
+		Bau& operator=(const Bau& orig);
 };
 
 // Implementações
-void Bau::absorb_B( Bau& origem)
+
+void clear_B( )
 {
-	
+	s_cds.l_produtos.clear();	// Limpa a lista da Seccao de CD
+	s_sal.l_produtos.clear();	// Limpa a lista da Seccao de Salgado
+	//s_doc.l_produtos.clear();	// Limpa a lista da Seccao de Salgado
 }
+
+Bau& Bau::operator=( Bau& orig)
+{
+	*this.s_cds = orig.s_cds;
+	*this.s_sal = orig.s_sal;
+
+	return *this;
+}
+
+
 
 
 #endif

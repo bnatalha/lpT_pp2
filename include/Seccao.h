@@ -13,6 +13,7 @@
 #include "header.h"
 #include "Produto.h"
 #include "myLista.h"
+#include "Bau.h"
 
 /**
 * @class Seccao
@@ -22,6 +23,7 @@
 template <typename T>
 class Seccao
 {
+	friend class Bau;
 	protected:
 		myLista<T> l_produtos;	/**< Lista de 'T' */
 
