@@ -11,17 +11,17 @@
 */
 
 #include "Produto.h"
-#include "Grupo_Produto.h"
+#include "Seccao.h"
 
 /**
 * @class Bau
-* @brief Contém um Grupo_Produto para cada tipo de produto e os modifica.
+* @brief Contém um Seccao para cada tipo de produto e os modifica.
 */
 class Bau
 {
 	private:
-		Grupo_Produto<CD> l_cds; /**< Grupo de Produtos do tipo CD  */
-		Grupo_Produto<Salgado> l_salga;	/**< Grupo de Produtos do tipo CD */
+		Seccao<CD> l_cds; /**< Grupo de Produtos do tipo CD  */
+		Seccao<Salgado> l_salga;	/**< Grupo de Produtos do tipo CD */
 
 		// doce etc
 
@@ -45,8 +45,17 @@ class Bau
 		virtual ~Bau(){}
 
 		// Métodos
+
+		// Getters
+		void search_provider(string& prov);	/**< Busca e imprime todos os produtos de um fornecedor */
 		
-		void absorb_B( Bau& origem);	/**<  Move todos os itens de 'origem' () para o Bau que chamou está função */
+		// Setters
+		void absorb_B( Bau& origem);	/**<  Move todos os itens de 'origem' () para o Bau que chamou está função () */
+		void clear_B( Bau& origem);	/**<  Remove todos os items de um Baú */
+
+		// save (?)
+		// load (?)
+		
 
 };
 

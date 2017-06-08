@@ -14,7 +14,7 @@
 #include "myLista.h"
 #include "Produto.h"
 #include "Produto_tipos.h"
-#include "Grupo_Produto.h"
+#include "Seccao.h"
 
 #include <list>
 using std::list;
@@ -183,8 +183,8 @@ void test_lista_2()
 
 void test2_Grupo_1()
 {
-	Grupo_Produto<CD> m_cds;
-	//Grupo_Produto<Salgado> m_salga;
+	Seccao<CD> m_cds;
+	//Seccao<Salgado> m_salga;
 
 	CD cd0;
 	CD cd1("Superunknow","Soundgarden","Rock");
@@ -217,8 +217,8 @@ void test2_Grupo_1()
 	m_cds.print_P(cout);
 	cout << endl;
 
-	Grupo_Produto<CD>::it_P it1 =  m_cds.search_P(cd1);	// it_p recebe a posição do primeiro CD no grupo
-	Grupo_Produto<CD>::it_P it2 =  m_cds.search_P(cd2);	//
+	Seccao<CD>::it_P it1 =  m_cds.search_P(cd1);	// it_p recebe a posição do primeiro CD no grupo
+	Seccao<CD>::it_P it2 =  m_cds.search_P(cd2);	//
 
 	// Testando unregister
 	m_cds.unregister_P(it1);
@@ -239,7 +239,7 @@ void test2_Grupo_1()
 
 	// Testando construtor de GRUPO_PRODUTO
 	cout << "\nTestando construtor cópia." << endl;
-	Grupo_Produto<CD> a_cds(m_cds);	// criando grupo a
+	Seccao<CD> a_cds(m_cds);	// criando grupo a
 	cout << "m = " << endl;
 	m_cds.print_P(cout);	// printando m
 	cout << endl;
@@ -249,7 +249,7 @@ void test2_Grupo_1()
 
 	// Testando operador=
 	cout << "\nTestando operador=." << endl;
-	Grupo_Produto<CD> b_cds;	// criando grupo b
+	Seccao<CD> b_cds;	// criando grupo b
 	b_cds = a_cds;	// atribuido grupo a ao grupo b
 	b_cds.register_P( cd1 );	// modificando b
 	cout << "b = " << endl;
@@ -270,7 +270,7 @@ void test2_Grupo_1()
 
 void test2_Grupo_modify()
 {
-	Grupo_Produto<CD> m_cds;
+	Seccao<CD> m_cds;
 
 	CD cd0;
 	CD cd1("Superunknow","Soundgarden","Rock");
@@ -294,7 +294,7 @@ void test2_Grupo_modify()
 
 void test3_bau()
 {
-
+	
 }
 
 #endif

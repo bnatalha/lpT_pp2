@@ -15,12 +15,12 @@
 #include "myLista.h"
 
 /**
-* @class Grupo_Produto
+* @class Seccao
 * @brief Classe que armazenará uma lista de um tipo de produto, 
 * @tparam Um tipo de produto (CD, DVD, Fruta, etc.)
 */
 template <typename T>
-class Grupo_Produto
+class Seccao
 {
 	protected:
 		myLista<T> l_produtos;	/**< Lista de 'T' */
@@ -28,23 +28,23 @@ class Grupo_Produto
 	public:
 
 		/**
-		* @brief Constrói um objeto Grupo_Produto vazio
+		* @brief Constrói um objeto Seccao vazio
 		*/
-		Grupo_Produto(){}
+		Seccao(){}
 
 		/**
-		* @brief Grupo_Produto criado a partir de outro grupo de produtos (cópia)
-		* @param original Grupo_Produto a ser copiado
+		* @brief Seccao criado a partir de outro grupo de produtos (cópia)
+		* @param original Seccao a ser copiado
 		*/
-		Grupo_Produto( const Grupo_Produto<T> &origem)
+		Seccao( const Seccao<T> &origem)
 			: l_produtos(origem.l_produtos)
 		{}
 
 		/**
-		* @brief Grupo_Produto criado a partir de outro grupo de produtos (cópia)
-		* @param original Grupo_Produto a ser copiado
+		* @brief Seccao criado a partir de outro grupo de produtos (cópia)
+		* @param original Seccao a ser copiado
 		*/
-		~Grupo_Produto(){}
+		~Seccao(){}
 
 		// Métodos
 		// Getters
@@ -53,6 +53,7 @@ class Grupo_Produto
 		void print_P( std::ostream& out );	/**< Imprime uma lista com todos os produtos do grupo */ 
 		void print_P( std::ostream& out, typename myLista<T>::iterator& it );	/**< Imprime informações sobre um produto */ 
 		typename myLista<T>::iterator search_P( const T& prod ); 	/**< Procura o produto por alguma de sua característica(?) */
+		// procurar por fornecedor (string)
 		
 		// Setters
 		void register_P( T& prod );	/**< Cadastra um produto na lista (se ele ja estiver cadastrado, aumenta a sua quantidade em um) */
@@ -62,8 +63,8 @@ class Grupo_Produto
 		void modify_P( T& prod );
 
 		// Sobrecarga de operadores
-		bool operator== (const Grupo_Produto<T> &g_direita);	/**< Compara um grupo com outro pra ver se são iguais (possuem a mesma lista de produtos)*/
-		Grupo_Produto<T>& operator= (const Grupo_Produto<T> &g_direita);	/**< Atribui a lista de um grupo para este */
+		bool operator== (const Seccao<T> &g_direita);	/**< Compara um grupo com outro pra ver se são iguais (possuem a mesma lista de produtos)*/
+		Seccao<T>& operator= (const Seccao<T> &g_direita);	/**< Atribui a lista de um grupo para este */
 		//friend &istream operator>> (istream &in, const Produto x);	/**< Sobrecarga do >> */
 
 		typedef typename myLista<T>::iterator it_P;
@@ -72,7 +73,7 @@ class Grupo_Produto
 // ============ Implementação ============
 
 template <typename T>
-int Grupo_Produto<T>::size_P()
+int Seccao<T>::size_P()
 {
 	int sum = 0;	// Vai armazenar a soma total de unidades de todos os produtos do grupo
 
@@ -83,7 +84,7 @@ int Grupo_Produto<T>::size_P()
 }
 
 template <typename T>
-float Grupo_Produto<T>::price_P()
+float Seccao<T>::price_P()
 {
 	float sum = 0;	// Vai armazenar a soma total de preços de todos os produtos do grupo
 
@@ -98,7 +99,7 @@ float Grupo_Produto<T>::price_P()
 * @param x quantidade a ser acrescentada ou removida ( se for negativo)
 */
 template <typename T>
-void Grupo_Produto<T>::change_qnt_P( typename myLista<T>::iterator& it, const int x )
+void Seccao<T>::change_qnt_P( typename myLista<T>::iterator& it, const int x )
 {
 	(*it).set_quantity( x );
 
@@ -109,7 +110,7 @@ void Grupo_Produto<T>::change_qnt_P( typename myLista<T>::iterator& it, const in
 * @param prod Produto utilizado na função
 */
 template <typename T>
-void Grupo_Produto<T>::register_P( T& prod )
+void Seccao<T>::register_P( T& prod )
 {
 	typename myLista<T>::iterator it = search_P(prod);	// Iterator para o produto
 	int qtd;	// Quantidade a ser registrada.
@@ -139,7 +140,7 @@ void Grupo_Produto<T>::register_P( T& prod )
 * @return Interator pra localização do produto procurado na lista. Se o iterator for igual ao fim da lista, o produto buscado não foi achado.
 */
 template <typename T>
-typename myLista<T>::iterator Grupo_Produto<T>::search_P( const T& prod )
+typename myLista<T>::iterator Seccao<T>::search_P( const T& prod )
 {
 	typename myLista<T>::iterator it = l_produtos.begin();
 	
@@ -153,7 +154,7 @@ typename myLista<T>::iterator Grupo_Produto<T>::search_P( const T& prod )
 * @param it Iterator para o produto
 */
 template <typename T>
-void Grupo_Produto<T>::unregister_P( typename myLista<T>::iterator& it )
+void Seccao<T>::unregister_P( typename myLista<T>::iterator& it )
 {
 	l_produtos.remove( (*it) );
 }
@@ -162,7 +163,7 @@ void Grupo_Produto<T>::unregister_P( typename myLista<T>::iterator& it )
 * @param out ostream onde vai ser impressa a função
 */
 template <typename T>
-void Grupo_Produto<T>::print_P( std::ostream& out )
+void Seccao<T>::print_P( std::ostream& out )
 {
 	out << "{ LISTANDO PRODUTOS" << endl;
 	for (auto &e: l_produtos)
@@ -178,7 +179,7 @@ void Grupo_Produto<T>::print_P( std::ostream& out )
 * @param it Iterator para o produto
 */
 template <typename T>
-void Grupo_Produto<T>::print_P( std::ostream& out, typename myLista<T>::iterator& it )
+void Seccao<T>::print_P( std::ostream& out, typename myLista<T>::iterator& it )
 {
 	(*it).print_it(out);
 }
@@ -187,7 +188,7 @@ void Grupo_Produto<T>::print_P( std::ostream& out, typename myLista<T>::iterator
 * @param g_direita grupo a ser comparado
 */
 template <typename T>
-bool Grupo_Produto<T>::operator== (const Grupo_Produto<T> &g_direita)
+bool Seccao<T>::operator== (const Seccao<T> &g_direita)
 {
 	return (l_produtos == g_direita.l_produtos);
 }
@@ -196,7 +197,7 @@ bool Grupo_Produto<T>::operator== (const Grupo_Produto<T> &g_direita)
 * @param g_direita grupo a ser copiado
 */
 template <typename T>
-Grupo_Produto<T>& Grupo_Produto<T>::operator= (const Grupo_Produto<T> &g_direita)
+Seccao<T>& Seccao<T>::operator= (const Seccao<T> &g_direita)
 {
 	l_produtos = g_direita.l_produtos;
 
@@ -206,7 +207,7 @@ Grupo_Produto<T>& Grupo_Produto<T>::operator= (const Grupo_Produto<T> &g_direita
 // MODIFY ========================
 
 template <>
-void Grupo_Produto<CD>::modify_P( CD& prod )
+void Seccao<CD>::modify_P( CD& prod )
 {
 	int operation = 1000;
 	while( operation != 0)
@@ -261,7 +262,7 @@ void Grupo_Produto<CD>::modify_P( CD& prod )
 }
 
 template <>
-void Grupo_Produto<Salgado>::modify_P( Salgado& prod )
+void Seccao<Salgado>::modify_P( Salgado& prod )
 {
 	int operation = 1000;
 	while( operation != 0)
@@ -320,7 +321,7 @@ void Grupo_Produto<Salgado>::modify_P( Salgado& prod )
 }
 
 template < typename T>
-void Grupo_Produto<T>::modify_P( T& prod )
+void Seccao<T>::modify_P( T& prod )
 {}
 
  

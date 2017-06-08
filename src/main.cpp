@@ -20,7 +20,8 @@ int main(int argc, char const *argv[])
 	//test1();
 	//test_lista_2();
 	test2_Grupo_1();
-	//test2_Grupo_modify();
+	//test2_Grupo_modify();	?
+	test3_bau();
 
 	return 0;
 }

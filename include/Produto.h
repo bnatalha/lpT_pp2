@@ -96,7 +96,7 @@ class Produto
 */
 float Produto::operator+(const Produto &x)
 {
-	return( (this->price * this->quantity ) + ( x.price * x.quantity )) ;
+	return( (this->price * this->quantity ) + ( x.price * x.quantity ) ) ;
 }
 
 /**
@@ -115,7 +115,7 @@ float operator+ (float y, const Produto &x)
 */
 float Produto::operator-(const Produto &x)
 {
-	return( this->price - x.price);
+	return( (this->price * this->quantity ) - ( x.price * x.quantity ) );
 }
 
 /**
@@ -125,7 +125,7 @@ float Produto::operator-(const Produto &x)
 */
 float operator-(float y, const Produto &x)
 {
-	return( y - x.price);
+	return( y - ( x.price * x.quantity ) );
 }
 
 // Comparação

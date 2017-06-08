@@ -42,7 +42,15 @@ class Salgado : public Produto
 		{}
 
 		/**
-		* @brief Destrutor virtual de CD
+		* @brief Constrói um objeto Salgado copiando de um outro obejto Salgado
+		*/
+		Salgado(const Salgado& orig) 
+			: Produto( orig.get_type(), orig.get_provider(), orig.get_price(), orig.get_barcode()),
+			expiration(orig.expiration), sodium(orig.sodium), gluten(orig.gluten), lactose(orig.lactose)
+		{ set_quantity(orig.get_quantity()); }
+
+		/**
+		* @brief Destrutor virtual de Salgado
 		*/
 		virtual ~Salgado(){}
 
