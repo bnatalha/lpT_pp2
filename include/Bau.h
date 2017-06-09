@@ -10,6 +10,7 @@
 * @sa --
 */
 
+#include "header.h"
 #include "Produto.h"
 #include "Seccao.h"
 
@@ -48,37 +49,187 @@ class Bau
 		// Métodos
 
 		// Getters
-		void search_provider(string& prov);	/**< Busca e imprime todos os produtos de um fornecedor */
+		//void search_provider(string& prov);	/**< Busca e imprime todos os produtos de um fornecedor */
+		bool is_empty( );	/**<  Checa se o Bau está vazio */
 		
 		// Setters
-		void absorb_B( Bau& orig);	/**<  Move todos os itens de 'orig' () para o Bau que chamou está função () */
+		void absorb_B( Bau& orig);	/**<  Move todos os itens de 'orig' para o Bau que chamou está função */
 		void clear_B( );	/**<  Remove todos os items deste Bau */
+		void register_CD( CD& p);	/**<  Registra um CD no Bau */
+		void register_Salgado( Salgado& p);	/**<  Registra um Salgado no Bau */
+		//void register_Doce( Doce& p);	/**<  Registra um Salgado no Bau */
 
-		// save (?)
-		// load (?)
+		void save();	/**<  Salva os Produtos e listas deste Bau em um arquivo .csv */ 
+		void load();	/**<  Carrega os Produtos e listas deste Bau de um arquivo .csv */ 
 		
 		// Sobrecarga de operadores
 		Bau& operator=(const Bau& orig);
+		void print(std::ostream& out);
 };
 
+// ==============
 // Implementações
+// ==============
 
-void clear_B( )
+
+// ============== Getters
+// ======================
+
+/**
+* @param orig Bau a ser absorvido
+*/
+void Bau::absorb_B( Bau& orig)
+{
+	*this = orig;	// Copia os items de 'orig' para este Bau
+	orig.clear_B();	// Limpa 'orig'
+}
+
+bool Bau::is_empty()
+{
+	return ( s_cds.l_produtos.empty() and
+			 s_sal.l_produtos.empty()  );
+}
+
+// ============== Setters
+// ======================
+
+/**
+* @param CD a ser registrado
+*/
+void Bau::register_CD( CD& p)
+{
+	s_cds.register_P(p);
+}
+
+/**
+* @param Salgado a ser registrado
+*/
+void Bau::register_Salgado( Salgado& p)
+{
+	s_sal.register_P(p);
+}
+
+void Bau::clear_B( )
 {
 	s_cds.l_produtos.clear();	// Limpa a lista da Seccao de CD
 	s_sal.l_produtos.clear();	// Limpa a lista da Seccao de Salgado
 	//s_doc.l_produtos.clear();	// Limpa a lista da Seccao de Salgado
 }
 
-Bau& Bau::operator=( Bau& orig)
+/**
+* @details Cada linha vai conter as seguintes informações sobre os produtos:
+* "TIPO";"FORNECEDOR";PREÇO;"CODIGO_DE_BARRAS";QUANTIDADE;<informações específicas de cada produto>
+*/
+void Bau::save( )
 {
-	*this.s_cds = orig.s_cds;
-	*this.s_sal = orig.s_sal;
+	string filename("data/my_store.csv");    /**< string com o nome do local do arquivo a ser salvo com os dados do baú */
+
+	std::ofstream outData(filename.c_str()); /**< stream de saída para 'filename' */
+
+	// Verifica se 'outData' abriu corretamente
+	if(outData.is_open())
+	{
+		// Imprime os produtos de cada secção
+		s_cds.save_csv_P(outData);
+		s_sal.save_csv_P(outData);
+		//s_doc.save_csv_P(outData);
+
+		// Fecha stream.
+		outData.close();
+	}
+	else
+	{
+		cerr << "Erro ao tentar inicializar stream de saída para "<< filename <<"." << endl;
+		exit(1);
+	}
+}
+
+void Bau::load( )
+{
+	
+	string filename("data/my_store.csv");    /**< string com o nome do local do arquivo a ser salvo com os dados do baú */
+	string dummy_type;	// Armazena o tipo do produto
+
+	CD new_cd; // Cria um novo CD
+
+	Salgado new_sa;	// Cria um novo Salgado
+
+	std::ifstream inData(filename.c_str()); /**< stream de entrada para 'filename' */
+
+	// Leitura
+	if(inData.is_open())
+	{
+		while( inData.tellg() != -1)	// enquanto não chegar ao fim do arquivo
+		{
+			inData.ignore(1);	// ignora o primeiro '\"'
+			cout << char(inData.peek()) << endl;
+			getline(inData, dummy_type, '\"');	// ex.: dummy_type = "CD"
+			inData.ignore(1);	// ignora o ';'
+
+			if (dummy_type == "CD")
+			{
+				new_cd.load_csv_it(inData);	// Carrega o new_ com o conteudo de uma linha de inData
+				s_cds.l_produtos.push_sorted(new_cd);	// Armazena o produto na lista de produtos diretamente
+			}
+
+			if (dummy_type == "Salgado")
+			{
+				new_sa.load_csv_it(inData);	// Carrega o new_ com o conteudo de uma linha de inData
+				s_sal.l_produtos.push_sorted(new_sa);	// Armazena o produto na lista de produtos diretamente
+			}
+
+			// doce etc
+		}
+
+		inData.close();
+	}
+	else
+	{
+		cerr << "Erro ao tentar inicializar stream de entrada para " << filename << "." << endl;
+		exit(1);
+	}
+
+}
+
+// =======================================
+// ============== Sobrecarga de operadores
+// =======================================
+
+Bau& Bau::operator=( const Bau& orig)
+{
+	s_cds = orig.s_cds;
+	s_sal = orig.s_sal;
 
 	return *this;
 }
 
-
-
+void Bau::print(std::ostream& out)
+{
+	out << "________________________________________________________________" << endl;
+	out << "------------------------- CUPOM FISCAL -------------------------" << endl;
+	out << "________________________________________________________________" << endl;
+	out << "====================== MERCADO QLEVE TUDO ======================" << endl;
+	out << "=============== Rua Inferno no Céu, n450, Alecrim  =============" << endl;
+	out << "________________________________________________________________" << endl;
+	out << "----------------------------------------------------------------" << endl;
+	if( s_cds.l_produtos.empty() == false )
+	{
+		out << "CD's:" << endl;
+		s_cds.print_P(out);
+		out << "subtotal: $" << s_cds.price_P() << endl;
+		out << "________________________________________________________________" << endl;
+	}
+	if( s_sal.l_produtos.empty() == false )
+	{
+		out << "Salgados:" << endl;
+		s_sal.print_P(out);
+		out << "subtotal: $" << s_sal.price_P() << endl;
+		out << "________________________________________________________________" << endl;
+	}
+	out << "----------------------------------------------------------------" << endl;
+	out << "TOTAL: $" << (s_sal.price_P() + s_cds.price_P()) << endl;
+	out << "----------------------------------------------------------------" << endl;
+	out << "Volte sempre!" << endl;
+}
 
 #endif

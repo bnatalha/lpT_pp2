@@ -19,6 +19,8 @@
 */
 class Salgado : public Produto
 {
+	friend class Bau;
+	
 	private:
 		string expiration; /**< Vencimento do Salgado */
 		float sodium;	/**< Taxa de sodio (em mg) */
@@ -70,6 +72,8 @@ class Salgado : public Produto
 
 		// auxiliar da sobrecarga de extração
 		void print_it (std::ostream& out) const;	/**< Função que define como vai ser a impressão do produto */
+		void save_csv_it (std::ofstream& out);	/**< Função que define como vai ser salva as informações dos produtos em um arquivo .csv */
+		void load_csv_it (std::ifstream& in);	/**< Função que define como seram lidas as informações dos produtos de um arquivo .csv */
 };
 
 // Implementações
@@ -82,14 +86,86 @@ void Salgado::print_it(std::ostream& out) const
 {
 	out << "[Produto: " <<  product_type
 		<< ", Fornecedor: " << provider
-		<< ", Preço: R$" << price	// Trocar '.' por ',' na impressão
+		<< ", Preço: $" << price	// Trocar '.' por ',' na impressão
 		<< ", Código de Barras: " << barcode
 		<< ", Quantidade: " << quantity
-		<< "\n/\\\tVencimento: " << expiration
+		<< ", Preço Total: $" << 0.0+(*this)
+		<< "\n+\tVencimento: " << expiration
 		<< " , Taxa de sódio: " << sodium << "mg"
 		<< " , Contem glúten: " << (gluten? "Sim":"Não")
 		<< " , Contem lactose: " << (lactose? "Sim":"Não")
 		<< "]" << endl;
 }
 
+/**
+* @param out Referência para um stream de saída para um arquivo
+*/
+void Salgado::save_csv_it(std::ofstream& out)
+{
+	out << '\"' << product_type << "\";"	//"tipo";
+		<< '\"' << provider << "\";"	//"fornecedor";
+		<< price << ";"	//preço;
+		<< '\"' << barcode << "\";"	//"codigo_de_baras";
+		<< quantity << ";"	//quantidade;
+		//
+		<< '\"' << expiration << "\";"	//"vencimento";
+		<< '\"' << sodium << "\";"	//"taxa de sódio (emmg)";
+		<< (gluten?'y':'n') << ";"	//'contem glutem';
+		<< (lactose?'y':'n')	//'contem lactose'
+		<< endl;
+
+	// Exemplo de impressão:
+	//"Salgado";"Salgarilhos";2;"000000133";5;"14/06/17";34;y;n
+	
+}
+
+/**
+* @param in Referência para um stream de entrada para um arquivo
+*/
+void Salgado::load_csv_it (std::ifstream& in)
+{
+	string dummy;
+
+	// Fornecedor
+	in.ignore(1);	// ignora o primeiro '\"'
+	getline(in, dummy, '\"');	// ex.: dummy = "Sony Music"
+	set_provider(dummy);	// modifica Fornecedor
+	in.ignore(1);	// ignora o ';''
+
+	// Preço
+	getline(in, dummy, ';');	// ex.: dummy = "9.4"
+	set_price( stof(dummy) );	// modifica Fornecedor
+
+	// Código de Barras
+	in.ignore(1);	// ignora o primeiro '\"'
+	getline(in, dummy, '\"');	// ex.: dummy = "000000123"
+	set_barcode(dummy);	// modifica Código de Barras
+	in.ignore(1);	// ignora o ';'
+		
+	// Quantidade
+	getline(in, dummy, ';');	// ex.: dummy = "2"
+	set_quantity( stoi(dummy) );	// modifica Quantidade
+
+	// 
+
+	// validade
+	getline(in, dummy, '\"');	// ex.: dummy = "13/04/18"
+	set_expiration(dummy);	// modifica a validade
+	in.ignore(1);	// ignora o ';'
+
+	// sódio
+	getline(in, dummy, ';');	// ex.: dummy = "24"
+	set_sodium( stof(dummy) );	// modifica sódio
+
+	// glutem
+	getline(in, dummy, ';');	// ex.: dummy = true
+	set_gluten( (dummy == "y" ?true:false) );	// modifica glutem
+
+	// lactose
+	getline(in, dummy);	// ex.: dummy = false
+	set_lactose( (dummy == "y" ?true:false) );	// modifica lactose
+	//in.ignore(1);	// ignora o primeiro '\n'
+	
+	// fim da linha
+}
 #endif

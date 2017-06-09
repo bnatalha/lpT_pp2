@@ -13,7 +13,6 @@
 #include "header.h"
 #include "Produto.h"
 #include "myLista.h"
-#include "Bau.h"
 
 /**
 * @class Seccao
@@ -24,6 +23,7 @@ template <typename T>
 class Seccao
 {
 	friend class Bau;
+	
 	protected:
 		myLista<T> l_produtos;	/**< Lista de 'T' */
 
@@ -61,13 +61,16 @@ class Seccao
 		void register_P( T& prod );	/**< Cadastra um produto na lista (se ele ja estiver cadastrado, aumenta a sua quantidade em um) */
 		void unregister_P( typename myLista<T>::iterator& it ); /**< Descadastra um produto */
 		void change_qnt_P( typename myLista<T>::iterator& it, const int x ); /**< Remove ou acrescenta uma quantidade de unidades de um certo produto cadastrado*/
-			
+
 		void modify_P( T& prod );
+		void save_csv_P(std::ofstream& out);	/**< Salva os produtos desta lista em um arquivo linkado a 'out' */
+			
 
 		// Sobrecarga de operadores
 		bool operator== (const Seccao<T> &g_direita);	/**< Compara um grupo com outro pra ver se são iguais (possuem a mesma lista de produtos)*/
 		Seccao<T>& operator= (const Seccao<T> &g_direita);	/**< Atribui a lista de um grupo para este */
 		//friend &istream operator>> (istream &in, const Produto x);	/**< Sobrecarga do >> */
+
 
 		typedef typename myLista<T>::iterator it_P;
 };
@@ -206,6 +209,12 @@ Seccao<T>& Seccao<T>::operator= (const Seccao<T> &g_direita)
 	return *this;
 }
 
+template <typename T>
+void Seccao<T>::save_csv_P(std::ofstream& out)
+{
+	for ( auto &p : l_produtos )	p.save_csv_it(out);
+}
+
 // MODIFY ========================
 
 template <>
@@ -326,5 +335,6 @@ template < typename T>
 void Seccao<T>::modify_P( T& prod )
 {}
 
- 
+#include "Bau.h"
+
 #endif

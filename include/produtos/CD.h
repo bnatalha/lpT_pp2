@@ -19,6 +19,8 @@
 */
 class CD : public Produto
 {
+	friend class Bau;
+
 	private:
 		string name;	/**< Nome do CD */
 		string artist;	/**< Artista do CD */
@@ -67,6 +69,8 @@ class CD : public Produto
 
 		// auxiliar da sobrecarga de extração
 		void print_it (std::ostream& out) const;	/**< Função que define como vai ser a impressão do produto */
+		void save_csv_it (std::ofstream& out);	/**< Função que define como vai ser salva as informações dos produtos em um arquivo .csv */
+		void load_csv_it (std::ifstream& in);	/**< Função que define como seram lidas as informações dos produtos de um arquivo .csv */
 };
 
 // Implementações
@@ -77,15 +81,88 @@ class CD : public Produto
 */
 void CD::print_it(std::ostream& out) const
 {
-	out << "[Produto: " <<  product_type
+	out << "Produto: " <<  product_type
 		<< ", Fornecedor: " << provider
-		<< ", Preço: R$" << price	// Trocar '.' por ',' na impressão
+		<< ", Preço (unidade): $" << price	// Trocar '.' por ',' na impressão
 		<< ", Código de Barras: " << barcode
 		<< ", Quantidade: " << quantity
-		<< "\n/\\\tTítulo: \"" << name << "\""
+		<< ", Preço Total: $" << 0.0+(*this)
+		<< "\n+\tTítulo: \"" << name << "\""
 		<< " , Artista: " << artist
 		<< " , Estilo: " << style
-		<< "]";
+		<< "";
 }
+
+/**
+* @param out Referência para um stream de saída para um arquivo
+*/
+void CD::save_csv_it(std::ofstream& out)
+{
+	//cout << "here";
+	out << '\"' << product_type << "\";"	//"tipo";
+		<< '\"' << provider << "\";"	//"fornecedor";
+		<< price << ";"	//preço;
+		<< '\"' << barcode << "\";"	//"codigo_de_baras";
+		<< quantity << ";"	//quantidade;
+		//
+		<< '\"' << name << "\";"	//"nome";
+		<< '\"' << artist << "\";"	//"artista";
+		<< '\"' << style << "\""	//"estilo";
+		<< endl;
+
+	// Exemplo de impressão:
+	//"CD";"Sony Music";9.4;"000000123";2;"Album A";"Artistino";"Forró"
+}
+
+/**
+* @param in Referência para um stream de entrada para um arquivo
+*/
+void CD::load_csv_it (std::ifstream& in)
+{
+	string dummy;
+
+	// Fornecedor
+	in.ignore(1);	// ignora o primeiro '\"'
+	getline(in, dummy, '\"');	// ex.: dummy = "Sony Music"
+	set_provider(dummy);	// modifica Fornecedor
+	in.ignore(1);	// ignora o ';''
+	
+	// Preço
+	getline(in, dummy, ';');	// ex.: dummy = "9.4"
+	set_price( stof(dummy) );	// modifica Fornecedor
+
+	// Código de Barras
+	in.ignore(1);	// ignora o primeiro '\"'
+	getline(in, dummy, '\"');	// ex.: dummy = "000000123"
+	set_barcode(dummy);	// modifica Código de Barras
+	in.ignore(1);	// ignora o ';'
+		
+	// Quantidade
+	getline(in, dummy, ';');	// ex.: dummy = "2"
+	set_quantity( stoi(dummy) );	// modifica Quantidade
+
+	// 
+
+	// nome
+	in.ignore(1);	// ignora o primeiro '\"'
+	getline(in, dummy, '\"');	// ex.: dummy = "Album A"
+	set_name(dummy);	// modifica nome
+	in.ignore(1);	// ignora o ';'
+
+	// artista
+	in.ignore(1);	// ignora o primeiro '\"'
+	getline(in, dummy, '\"');	// ex.: dummy = "Artistino"
+	set_artist(dummy);	// modifica artista
+	in.ignore(1);	// ignora o ';'
+
+	// estilo
+	in.ignore(1);	// ignora o primeiro '\"'
+	getline(in, dummy, '\"');	// ex.: dummy = "Forró"
+	set_style(dummy);	// modifica estilo
+	in.ignore(1);	// ignora o primeiro '\n'
+	
+	// fim da linha
+}
+
 
 #endif

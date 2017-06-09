@@ -18,6 +18,8 @@
 */
 class Produto
 {
+	friend class Bau;
+
 	protected:
 		string product_type;	/**< Tipo de produto (bebida, cd,etc) */
 		string provider;	/**< Nome do fornecedor deste produto */
@@ -82,8 +84,7 @@ class Produto
 		
 		// auxiliar da sobrecarga de extração
 		virtual void print_it (std::ostream& out) const =0;	/**< Função virtual pura que define como vai ser a impressão das informações do produto */
-
-		//friend &istream operator>> (istream &in, const Produto x);	/**< Sobrecarga do >> */
+		
 };
 
 // ============ Implementação ============

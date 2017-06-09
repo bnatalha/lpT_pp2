@@ -15,6 +15,7 @@
 #include "Produto.h"
 #include "Produto_tipos.h"
 #include "Seccao.h"
+#include "Bau.h"
 
 #include <list>
 using std::list;
@@ -294,7 +295,86 @@ void test2_Grupo_modify()
 
 void test3_bau()
 {
-	
+	Bau loja;
+	Bau copia;
+
+	CD cd1("Superunknow","Soundgarden","Rock");
+	CD cd2("Melhor do que parece","O Terno","Rock");
+	CD cd3("Black album","Metallica","Infantil");
+	CD cd4("zapzap","os iphonistas","comedia");
+	Salgado sg1("14/06/2017",401,false,true);
+	Salgado sg2("15/06/2017",410,true,true);
+	Salgado sg3("15/06/2017",420,false,false);
+
+	cd1.set_barcode("001");
+	cd1.set_provider("Sony Music");
+	cd1.set_price(14.3);
+
+	cd2.set_barcode("002");
+	cd2.set_provider("Brasilzil");
+	cd2.set_price(10);
+
+	cd3.set_barcode("003");
+	cd3.set_provider("Bombom Produções");
+	cd3.set_price(1.99);
+
+	cd4.set_barcode("004");
+	cd4.set_provider("Bombom Produções");
+	cd4.set_price(1.99);
+
+	//salgados
+	sg1.set_barcode("101");
+	sg1.set_provider("Soninha");
+	sg1.set_price(14.3);
+
+	sg2.set_barcode("102");
+	sg2.set_provider("Brasilzil");
+	sg2.set_price(10);
+
+	sg3.set_barcode("103");
+	sg3.set_provider("Bombom Produções");
+	sg3.set_price(1.99);
+
+
+	loja.register_CD(cd1);
+	loja.register_CD(cd2);
+	loja.register_CD(cd3);
+	loja.register_CD(cd4);
+	loja.register_Salgado(sg1);
+	loja.register_Salgado(sg2);
+	loja.register_Salgado(sg3);
+
+	cout << "loja:\n";
+	loja.print(cout);
+	cout << endl;
+	cout << "copia:\n";
+	copia.print(cout);
+	cout << endl;
+
+	copia.absorb_B(loja);
+
+	cout << "--\n--\n--\n";
+	cout << "loja:\n";
+	loja.print(cout);
+	cout << endl;
+	cout << "copia:\n";
+	copia.print(cout);
+	cout << endl;	
+
+
+	copia.save();
+	loja.load();
+	cout << endl;	
+	cout << endl;	
+	cout << endl;	
+	cout << endl;
+	cout << "--\n--\n--\n";
+	cout << "loja:\n";
+	loja.print(cout);
+	cout << endl;
+
+
+
 }
 
 #endif

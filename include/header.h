@@ -24,4 +24,8 @@ using std::string;
 #include <ostream>
 using std::ostream;
 
+#include <fstream>
+using std::ofstream;
+using std::ifstream;
+
 #endif
