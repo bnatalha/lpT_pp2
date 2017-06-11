@@ -54,7 +54,7 @@ class Seccao
 		float price_P();	/**< Retorna a soma dos preços de todos os produtos (contando com as unidade) neste grupo */
 		void print_P( std::ostream& out );	/**< Imprime uma lista com todos os produtos do grupo */ 
 		void print_P( std::ostream& out, typename myLista<T>::iterator& it );	/**< Imprime informações sobre um produto */ 
-		typename myLista<T>::iterator search_P( const T& prod ); 	/**< Procura o produto por alguma de sua característica(?) */
+		typename myLista<T>::iterator search_P( const string& m_barcode ); /**< Procura Por um produto cadastrado que tenha seu código de barras igual a 'm_barcode' */
 		// procurar por fornecedor (string)
 		
 		// Setters
@@ -108,7 +108,7 @@ void Seccao<T>::change_qnt_P( typename myLista<T>::iterator& it, const int x )
 {
 	(*it).set_quantity( x );
 
-	cout << "Nova quantidade: " << (*it).get_quantity() << endl;
+//	cout << "Nova quantidade: " << (*it).get_quantity() << endl;
 }
 
 /*
@@ -117,7 +117,7 @@ void Seccao<T>::change_qnt_P( typename myLista<T>::iterator& it, const int x )
 template <typename T>
 void Seccao<T>::register_P( T& prod )
 {
-	typename myLista<T>::iterator it = search_P(prod);	// Iterator para o produto
+	typename myLista<T>::iterator it = search_P(prod.get_barcode());	// Iterator para o produto
 	int qtd;	// Quantidade a ser registrada.
 
 	if (it != l_produtos.end())	// Se o produto ja foi registrado
@@ -127,7 +127,7 @@ void Seccao<T>::register_P( T& prod )
 		l_produtos.push_sorted(prod);	// Regista o produto.
 		cout << " Produto foi registrado.";
 	
-		it = search_P(prod);
+		it = search_P(prod.get_barcode());
 	
 		cout << "Diga quantas unidades deste produto serão registradas (ex.: 9). >>";
 		cin >> qtd;
@@ -141,16 +141,16 @@ void Seccao<T>::register_P( T& prod )
 }
 
 /**
-* @param prod Produto utilizado na função
-* @return Interator pra localização do produto procurado na lista. Se o iterator for igual ao fim da lista, o produto buscado não foi achado.
+* @param m_barcode código de barras do Produto procurado
+* @return Interator pra localização do Produto procurado na lista. Se o iterator for igual ao fim da lista, o produto buscado não foi achado.
 */
 template <typename T>
-typename myLista<T>::iterator Seccao<T>::search_P( const T& prod )
+typename myLista<T>::iterator Seccao<T>::search_P( const string& m_barcode )
 {
-	typename myLista<T>::iterator it = l_produtos.begin();
+	typename myLista<T>::iterator it = l_produtos.begin();	// Cria um iterator pro inícia da 'l_produtos'
 	
 	for( ; it != l_produtos.end() ; it++ )
-		if( (*it) == prod ) break;	// encontrou*
+		if( (*it).get_barcode() == m_barcode ) break;	// encontrou*
 
 	return it;	// *se it == l_produtos.end(), não encontrou.
 }
@@ -170,9 +170,12 @@ void Seccao<T>::unregister_P( typename myLista<T>::iterator& it )
 template <typename T>
 void Seccao<T>::print_P( std::ostream& out )
 {
-	out << "{ LISTANDO PRODUTOS" << endl;
+	int i = 0;	// índice
+
+	out << "LISTANDO PRODUTOS: {" << endl;
 	for (auto &e: l_produtos)
 	{
+		cout << "(" << i++ << "):";
 		e.print_it(out);
 		cout << endl;
 	}
@@ -282,7 +285,7 @@ void Seccao<Salgado>::modify_P( Salgado& prod )
 		float new_f;
 		char u;
 
-		cout << "O que será modificado do CD ("<< prod.get_barcode() <<")?" << endl
+		cout << "O que será modificado do Salgado ("<< prod.get_barcode() <<")?" << endl
 			 << "(1) sódio;"
 			 << "(2) glutem;"
 			 << "(3) lactose;"

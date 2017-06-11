@@ -16,7 +16,7 @@
 
 /**
 * @class Bau
-* @brief Contém um Seccao para cada tipo de produto e os modifica.
+* @brief Um Baú de items. Contém um Seccao para cada tipo de produto e os modifica.
 */
 class Bau
 {
@@ -51,12 +51,16 @@ class Bau
 		// Getters
 		//void search_provider(string& prov);	/**< Busca e imprime todos os produtos de um fornecedor */
 		bool is_empty( );	/**<  Checa se o Bau está vazio */
+		typename myLista<CD>::iterator search_CD( const string& m_barcode); /**< Procura por um codigo de barras na Secção de CD do Bau */
+		typename myLista<Salgado>::iterator search_Salgado( const string& m_barcode); /**< Procura por um um codigo de barras na Secção de Salgado do Bau */
 		
 		// Setters
 		void absorb_B( Bau& orig);	/**<  Move todos os itens de 'orig' para o Bau que chamou está função */
 		void clear_B( );	/**<  Remove todos os items deste Bau */
-		void register_CD( CD& p);	/**<  Registra um CD no Bau */
-		void register_Salgado( Salgado& p);	/**<  Registra um Salgado no Bau */
+		void register_CD( CD& p);	/**<  Cadastra um CD no Bau */
+		void register_Salgado( Salgado& p);	/**<  Cadastra um Salgado no Bau */
+		void unregister_CD( typename myLista<CD>::iterator& p);	/**<  Descadastra um CD no Bau */
+		void unregister_Salgado( typename myLista<CD>::iterator& p);	/**<  Descadastra um Salgado no Bau */
 		//void register_Doce( Doce& p);	/**<  Registra um Salgado no Bau */
 
 		void save();	/**<  Salva os Produtos e listas deste Bau em um arquivo .csv */ 
@@ -90,6 +94,26 @@ bool Bau::is_empty()
 			 s_sal.l_produtos.empty()  );
 }
 
+/**
+* @param CD procurado
+*/
+typename myLista<CD>::iterator Bau::search_CD( const string& m_barcode)
+{
+	typename myLista<CD>::iterator it = s_cds.search_P(m_barcode);	// Cria um iterator para receber o resultado da busca pelo produto na lista
+
+	return it;	
+}
+
+/**
+* @param Salgado procurado
+*/
+typename myLista<Salgado>::iterator Bau::search_Salgado( const string& m_barcode)
+{
+	typename myLista<Salgado>::iterator it = s_sal.search_P(m_barcode);	// Cria um iterator para receber o resultado da busca pelo produto na lista
+
+	return it;	
+}
+
 // ============== Setters
 // ======================
 
@@ -114,6 +138,16 @@ void Bau::clear_B( )
 	s_cds.l_produtos.clear();	// Limpa a lista da Seccao de CD
 	s_sal.l_produtos.clear();	// Limpa a lista da Seccao de Salgado
 	//s_doc.l_produtos.clear();	// Limpa a lista da Seccao de Salgado
+}
+
+void unregister_CD( typename myLista<CD>::iterator& p)
+{
+	s_cds.unregister_P(p);
+}
+
+void unregister_Salgado( typename myLista<Salgado>::iterator& p)
+{
+	s_sal.unregister_P(p);
 }
 
 /**
@@ -151,7 +185,6 @@ void Bau::load( )
 	string dummy_type;	// Armazena o tipo do produto
 
 	CD new_cd; // Cria um novo CD
-
 	Salgado new_sa;	// Cria um novo Salgado
 
 	std::ifstream inData(filename.c_str()); /**< stream de entrada para 'filename' */
@@ -162,7 +195,7 @@ void Bau::load( )
 		while( inData.tellg() != -1)	// enquanto não chegar ao fim do arquivo
 		{
 			inData.ignore(1);	// ignora o primeiro '\"'
-			cout << char(inData.peek()) << endl;
+			//cout << char(inData.peek()) << endl;
 			getline(inData, dummy_type, '\"');	// ex.: dummy_type = "CD"
 			inData.ignore(1);	// ignora o ';'
 
@@ -178,6 +211,7 @@ void Bau::load( )
 				s_sal.l_produtos.push_sorted(new_sa);	// Armazena o produto na lista de produtos diretamente
 			}
 
+			dummy_type = "";
 			// doce etc
 		}
 

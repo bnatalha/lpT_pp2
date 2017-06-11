@@ -11,7 +11,8 @@ protected:
 public:
 	Base(int vCodigo);
 	virtual void imprime()=0;
-	virtual void foo() { cout << "I'm a foo." << endl; }
+	virtual void foo(){}
+	virtual void bar(){}
 };
 
 Base::Base(int vCodigo):
@@ -19,11 +20,13 @@ Base::Base(int vCodigo):
 
 class TipoA: public Base
 {
+	//friend class Base;
 private:
 	string m_prefixo;
 public:
 	TipoA(int vCodigo, string vPrefixo);
 	void imprime();
+	void foo(){ cout << "foo" << m_prefixo << endl;}
 };
 
 TipoA::TipoA(int vCodigo, string vPrefixo):
@@ -37,11 +40,14 @@ TipoA::imprime()
 
 class TipoB: public Base
 {
+	//friend class Base;
 private:
 	string m_sufixo;
+
 public:
 	TipoB(int vCodigo, string vSufixo);
 	void imprime();
+	void bar(){ cout << "bar" << m_sufixo << endl;}
 };
 
 TipoB::TipoB(int vCodigo, string vSufixo):
@@ -52,5 +58,3 @@ TipoB::imprime()
 {
 	cout << m_codigo << m_sufixo << endl;
 }
-
-

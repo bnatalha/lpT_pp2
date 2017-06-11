@@ -8,16 +8,17 @@ int main(int argc, char const *argv[])
 {
 	TipoA a1(1,"a"); // Instancia UM objeto da classe TipoA
 	TipoB b1(2,"b"); // Instancia UM objeto da classe TipoB
-	a1.imprime(); 
-	b1.imprime();
+	//a1.imprime(); 
+	//b1.imprime();
 
 	list<Base*> lista; // Cria UMA lista (usando STL) genérica usando a classe Base
 	
 	// Preenche a lista com elementos do TipoA (quando i for par) ou TipoB (quando i for impar)
-	for(int i=0; i<TOTAL; i++)
+	for(int i=0; i<1; i++)
 	{
 		// O metodo push_back() insere um elemento no final da lista (STL)
-		(i%2)?lista.push_back(new TipoA(i,"aa")):lista.push_back(new TipoB(i,"bb"));
+		lista.push_front(&a1);
+		lista.push_back(&b1);
 	}
 
 	// Imprime os elementos da lista usando um iterador (STL)
@@ -30,7 +31,8 @@ int main(int argc, char const *argv[])
 
 	cout << "NEXT" << endl;
 
-	a1.foo();
+	lista.front()->foo();
+	lista.back()->bar();
 
 	return 0;
 }

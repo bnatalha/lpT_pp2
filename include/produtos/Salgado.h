@@ -12,6 +12,7 @@
 */
 
 #include "Produto.h"
+#include "header.h"
 
 /**
 * @class Salgado
@@ -40,7 +41,7 @@ class Salgado : public Produto
 		* @brief Constrói um objeto Salgado especificano seus dados através da passagem de seus atributos como parâmetro
 		*/
 		Salgado(string vencimento, float sodio, bool glut, bool lacto) 
-			: Produto("Salgado","", 0, "00000000"), expiration(vencimento), sodium(0), gluten(glut), lactose(lacto)
+			: Produto("Salgado","", 0, "00000000"), expiration(vencimento), sodium(sodio), gluten(glut), lactose(lacto)
 		{}
 
 		/**
@@ -69,6 +70,7 @@ class Salgado : public Produto
 		void set_sodium(const float &x) { sodium = x; }	/**< Altera a taxa de açucar (em mg) do produto */
 		void set_gluten(const bool &x) { gluten = x; }	/**< Altera o atributo que diz se o produto contém glúten ou não */
 		void set_lactose(const bool &x) { lactose = x; }	/**< Altera o atributo que diz se o produto contém lactose ou não */
+		void chage(); /**< Altera tudo do Salgado */
 
 		// auxiliar da sobrecarga de extração
 		void print_it (std::ostream& out) const;	/**< Função que define como vai ser a impressão do produto */
@@ -109,7 +111,7 @@ void Salgado::save_csv_it(std::ofstream& out)
 		<< quantity << ";"	//quantidade;
 		//
 		<< '\"' << expiration << "\";"	//"vencimento";
-		<< '\"' << sodium << "\";"	//"taxa de sódio (emmg)";
+		<< sodium << ";"	//"taxa de sódio (em mg)";
 		<< (gluten?'y':'n') << ";"	//'contem glutem';
 		<< (lactose?'y':'n')	//'contem lactose'
 		<< endl;
@@ -117,6 +119,57 @@ void Salgado::save_csv_it(std::ofstream& out)
 	// Exemplo de impressão:
 	//"Salgado";"Salgarilhos";2;"000000133";5;"14/06/17";34;y;n
 	
+}
+
+void Salgado::chage()
+{
+
+	string new_s;
+	char u;
+	float new_f;
+	int new_i;
+
+	cout << "Insira novo fornecedor. >>" ;
+	cin >> new_s;	
+	cin.ignore();
+	set_provider(new_s);
+	cout << "Insira novo preço. >>" ;
+	cin >> new_f;	
+	cin.ignore();
+	set_price( stof(new_f) );
+	cout << "Insira novo codigo de barras. >>" ;
+	cin >> new_s;	
+	cin.ignore();
+	set_barcode(new_s);
+	cout << "Insira nova quantidade. >>" ;
+	cin >> new_i;	
+	cin.ignore();
+	set_quantity( stoi(new_i) );
+
+	// PROPRIOS DO PRODUTO
+
+	// SODIO
+	cout << "Insira novo sódio. >>" ;
+	cin >> new_f;	// Armazena o novo sódio em 'new_'
+	cin.ignore();
+	set_sodium(new_f);	// Modifica o sódio para o conteudo de 'new_'
+	cout << "sódio: \"" << get_sodium() << "\"" << endl;
+
+	// GLUTEN
+	cout << "Contem glutem? (y/n). >>"
+	cin >> u;	// Armazena o novo glúten em 'u'
+	//cin.ignore();
+	// Modifica o glúten
+	if( u == 'y')	set_gluten(true);
+	cout << "glúten:  \"" << (get_gluten()?"":"NAO") << "contém\"."<< endl;
+
+	//LACTOSE
+	cout << "Contem lactose? (y/n). >>"
+	cin >> u;	// Armazena o novo lactose em 'u'
+	//cin.ignore();
+	// Modifica o lactose
+	if( u == 'y')	set_lactose(true);
+	cout << "lactose:  \"" << (get_lactose()?"":"NAO") << "contém\"."<< endl;			
 }
 
 /**
@@ -149,6 +202,7 @@ void Salgado::load_csv_it (std::ifstream& in)
 	// 
 
 	// validade
+	in.ignore(1);	// ignora o primeiro '\"'
 	getline(in, dummy, '\"');	// ex.: dummy = "13/04/18"
 	set_expiration(dummy);	// modifica a validade
 	in.ignore(1);	// ignora o ';'
@@ -168,4 +222,5 @@ void Salgado::load_csv_it (std::ifstream& in)
 	
 	// fim da linha
 }
+
 #endif

@@ -353,7 +353,7 @@ void test3_bau()
 
 	copia.absorb_B(loja);
 
-	cout << "--\n--\n--\n";
+	cout << "-1-\n-1-\n-1-\n";
 	cout << "loja:\n";
 	loja.print(cout);
 	cout << endl;
@@ -361,20 +361,15 @@ void test3_bau()
 	copia.print(cout);
 	cout << endl;	
 
-
 	copia.save();
+	cout << "here" << endl;
 	loja.load();
 	cout << endl;	
 	cout << endl;	
-	cout << endl;	
-	cout << endl;
-	cout << "--\n--\n--\n";
+	cout << "-2-\n-2-\n-2-\n";
 	cout << "loja:\n";
 	loja.print(cout);
 	cout << endl;
-
-
-
 }
 
 #endif
