@@ -18,7 +18,7 @@
 */
 class Produto
 {
-	friend class Bau;
+	//friend class Bau;
 
 	protected:
 		string product_type;	/**< Tipo de produto (bebida, cd,etc) */
@@ -75,15 +75,61 @@ class Produto
 		friend float operator+ (float y, const Produto &x);	/**< Retorna o resultado da adição de um float com o preço do produto */
 		float operator- (const Produto &x);	/**< Retorna o resultado da subtração do preço de dois produtos */
 		friend float operator- (float y, const Produto &x);	/**< Retorna o resultado da subtração de um float com o preço do produto */
+		//virtual bool operator= (const Produto &x);	/**< Cria uma copia de 'x' dinamicamente e atribui essa valor a o produto que invocou esta função */
 		virtual bool operator== (const Produto &x);	/**< Verifica se dois produtos tem codigós de barra iguais */
 		virtual bool operator!= (const Produto &x);	/**< Verifica se dois produtos tem codigós de barra diferentes */
 		virtual bool operator> (const Produto &x); /**< Verifica se este produto tem o seu valor do código de barras maior do que o outro */
 		virtual bool operator< (const Produto &x); /**< Verifica se este produto tem o seu valor do código de barras menor do que o outro */
 		virtual bool operator>= (const Produto &x); /**< Verifica se este produto tem o seu valor do código de barras maior ou igual do que o outro */
 		virtual bool operator<= (const Produto &x); /**< Verifica se este produto tem o seu valor do código de barras menor ou igual do que o outro */
+
+		// ========================= Getters e Setters Virtuais =========================
+		//  = Getters =
+		virtual string get_expiration() { return ""; }	/**< Retorna o vencimento do produto (string) */
+		virtual float get_alchool() {return 0;}	/**< Retorna o teor alcoólico (em %) do produto (float) */
+		virtual float get_sugar() {return 0;}	/**< Retorna a taxa de açucar (em mg) do produto (float) */
+		virtual float get_sodium() {return 0;}	/**< Retorna a taxa de sódio (em mg) do produto */
+		virtual bool get_gluten() {return true;}	/**< Retorna se o produto contém glúten ou não */
+		virtual bool get_lactose() {return true;}	/**< Retorna se o produto contém lactose ou não */
+		virtual int get_number() {return 0;}	/**< Retorna o número do lote do produto (int) */
+		virtual string get_date() {return "";}	/**< Retorna a data de produção do lote do produto (string) */
+		
+		virtual string get_name() {return "";}	/**< Retorna título do CD (string) */
+		virtual string get_title() {return "";}	/**< Retorna o título do livro (string) */
+		virtual string get_artist() {return "";}	/**< Retorna artista do CD (string) */
+		virtual string get_author() {return "";}	/**< Retorna o autor do livro (string) */
+		virtual string get_style() {return "";}	/**< Retorna o estilo do CD (string) */
+		virtual string get_genre() {return "";}	/**< Retorna o gênero do produto */
+		virtual string get_publisher() {return "";}	/**< Retorna a editora do livro (string) */
+		virtual int get_duration() {return 0;}	/**< Retorna a duração (em minutos) do DVD (int) */
+		virtual int get_year() {return 0;}	/**< Retorna ano de publicação do livro (int) */
+
+		//Setters
+		virtual void set_expiration(const string &x) {}	/**< Altera o vencimento do produto (string) */
+		virtual void set_alchool(const float &x) {}	/**< Altera o teor alcoólico (em %) do produto (float) */
+		virtual void set_sugar(const float &x) {}	/**< Altera a taxa de açucar (em mg) do produto (float) */
+		virtual void set_sodium(const float &x) {}	/**< Altera a taxa de açucar (em mg) do produto */
+		virtual void set_gluten(const bool &x) {}	/**< Altera o atributo que diz se o produto contém glúten ou não */
+		virtual void set_lactose(const bool &x) {}	/**< Altera o atributo que diz se o produto contém lactose ou não */
+		virtual void set_number(const int &x) {}	/**< Altera o número do lote do produto (int) */
+		virtual void set_date(const string &x) {}	/**< Altera data de produção do lote do produto (string) */
+		
+		virtual void set_name(const string &x) {}	/**< Altera título do CD (string) */
+		virtual void set_title(const string &x) {}	/**< Altera o título do livro */
+		virtual void set_artist(const string &x) {}	/**< Altera artista do CD (string) */
+		virtual void set_author(const string &x) {}	/**< Altera o autor do livro (string) */
+		virtual void set_style(const string &x) {}	/**< Altera o estilo do CD (string) */
+		virtual void set_genre(const string &x) {}	/**< Altera o gênero do DVD */
+		virtual void set_duration(const int &x) {}	/**< Altera a duração (em minutos) do DVD (int) */
+		virtual void set_publisher(const string &x) {}	/**< Altera a editora do livro (string) */
+		virtual void set_year(const int &x) {} /**< Altera o ano de publicação do livro (int) */
+
+		virtual void change() =0;
 		
 		// auxiliar da sobrecarga de extração
 		virtual void print_it (std::ostream& out) const =0;	/**< Função virtual pura que define como vai ser a impressão das informações do produto */
+		virtual void save_csv_it (std::ofstream& out) =0;	/**< Função virtual pura que define como vai ser salva as informações dos produtos em um arquivo .csv */
+		virtual void load_csv_it (std::ifstream& in) =0;	/**< Função virtual pura que define como seram lidas as informações dos produtos de um arquivo .csv */
 		
 };
 
@@ -137,7 +183,7 @@ float operator-(float y, const Produto &x)
 */
 bool Produto::operator== (const Produto &x)
 {
-	return (this->barcode == x.barcode);
+	return (stoull(barcode) == stoull(x.barcode));
 }
 
 /**
@@ -146,35 +192,37 @@ bool Produto::operator== (const Produto &x)
 */
 bool Produto::operator!= (const Produto &x)
 {
-	return (this->barcode != x.barcode);
+	return (*this != x);
 }
 
 /**
 * @param x Referência para o Produto a ter seu código de barras comparado
 */
 bool Produto::operator>( const Produto &x){
-	return (barcode > x.barcode);
+	return (stoull(barcode) > stoull(x.barcode));
 }
 
 /**
 * @param x Referência para o Produto a ter seu código de barras comparado
 */
 bool Produto::operator<( const Produto &x){
-	return (barcode < x.barcode);
+	return (stoull(barcode) < stoull(x.barcode));
 }
 
 /**
 * @param x Referência para o Produto a ter seu código de barras comparado
 */
 bool Produto::operator>= ( const Produto &x){
-	return ((barcode > x.barcode) or (barcode == x.barcode));
+	//return (*this > x) or (barcode == x.barcode));
+	return ((*this > x) or (*this == x));
 }
 
 /**
 * @param x Referência para o Produto a ter seu código de barras comparado
 */
 bool Produto::operator<= ( const Produto &x){
-	return ((barcode < x.barcode) or (barcode == x.barcode));
+	//return ((barcode < x.barcode) or (barcode == x.barcode));
+	return ((*this < x) or (*this == x));
 }
 
 #include "Produto_tipos.h"

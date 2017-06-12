@@ -14,8 +14,8 @@
 #include "myLista.h"
 #include "Produto.h"
 #include "Produto_tipos.h"
-#include "Seccao.h"
-#include "Bau.h"
+#include "Cesta.h"
+//#include "Bau.h"
 
 #include <list>
 using std::list;
@@ -64,22 +64,18 @@ void test1()
 	//myLista<Produto*> ABC;
 	
 	//Bebida a("15/06/17",35,600);
-	CD b("Melhor do que parece","O Terno","Rock nacional");
+	//CD b("Melhor do que parece","O Terno","Rock nacional");
 	//DVD c("Zapzap: o filme", "Ficção científica", 240);
 	//Doce d("14/06/2017",5,true,true);
 	//Fruta e("14/07/2017",104,"14/06/2017");
 	//Livro f("Destruindo sua teoria de conjunto","Russel","Ed. De Jesus", 1902);
-	Salgado g("14/06/2017",40,false,true);
+	//Salgado g("14/06/2017",40,false,true);
 	/*
-	ABC.push_sorted(a);
-	ABC.push_sorted(b);
-	ABC.push_sorted(c);
-	ABC.push_sorted(d);
-	ABC.push_sorted(e);
-	ABC.push_sorted(f);
+	ABC.push_sorted(a); ABC.push_sorted(b);	ABC.push_sorted(c);
+	ABC.push_sorted(d);	ABC.push_sorted(e);	ABC.push_sorted(f);
 	ABC.push_sorted(g);
 	*/
-	CD* p = new CD("The Black Album","Metallica","Infantil");
+	CD *p = new CD("The Black Album","Metallica","Infantil");
 	ABC.push_back(p);
 	//ABC.push_sorted(new Fruta("14/07/2017",104,"14/06/2017"));
 
@@ -92,9 +88,12 @@ void test1()
 	}
 	cout << "}" << endl;
 	
-	//cout << "get de lista de produto: " << (ABC.front())->get_duration() << endl;
+	cout << "get de lista de produto: " << (ABC.front())->get_duration() << endl;
 	
-	delete p;
+	//delete p;
+
+	for (auto &e : ABC) delete e;
+
 
 	// Não funciona pq é Lista de Produto e não de DVD
 	// Uma lista de Estoque pra cada tipo de produto.
@@ -182,96 +181,120 @@ void test_lista_2()
 	cout << "]" << endl;
 }
 
-void test2_Grupo_1()
+
+void test2_Cesta_1()
 {
-	Seccao<CD> m_cds;
-	//Seccao<Salgado> m_salga;
+	// Criando Cesta
+	Cesta C1;
+	cout << "==================================================================" << endl;
+	cout << "Cesta criadas." << endl;
+	
+	CD *cd0 = new CD("Superunknow","Soundgarden","Rock");
+	CD *cd1 = new CD("Superunknow","Soundgarden","Rock");
+	CD *cd2 = new CD("Melhor do que parece","O Terno","Rock");
+	CD *cd3 = new CD("Black album","Metallica","Infantil");
+	Salgado *sa1 = new Salgado("14/06/2017",40,false,true);
 
-	CD cd0;
-	CD cd1("Superunknow","Soundgarden","Rock");
-	CD cd2("Melhor do que parece","O Terno","Rock");
-	CD cd3("Black album","Metallica","Infantil");
+	cd0->set_barcode("567347");
 
-	cd1.set_barcode("001");
-	cd1.set_provider("Sony Music");
-	cd1.set_price(14.3);
+	cd1->set_barcode("006");
+	cd1->set_provider("Sony Music");
+	cd1->set_price(14.3);
 
-	cd2.set_barcode("002");
-	cd2.set_provider("Brasilzil");
-	cd2.set_price(10);
+	cd2->set_barcode("002");
+	cd2->set_provider("Brasilzil");
+	cd2->set_price(10);
 
-	cd3.set_barcode("003");
-	cd3.set_provider("Bombom Produções");
-	cd3.set_price(1.99);
+	cd3->set_barcode("005");
+	cd3->set_provider("Bombom Produções");
+	cd3->set_price(1.99);
 
-	cout << "here" << endl;
+	sa1->set_barcode("007");
+	sa1->set_provider("Soninha");
+	sa1->set_price(1.99);
 
-	// testando register_P
-	m_cds.register_P(cd1);
-	m_cds.register_P(cd2);
-	m_cds.register_P(cd3);
-	m_cds.register_P(cd1);
-	m_cds.register_P(cd2);
-	m_cds.register_P(cd2);
-	m_cds.register_P(cd3);
-	m_cds.register_P(cd2);
-	m_cds.print_P(cout);
+	cout << "==================================================================" << endl;
+	cout << "CD's e Salgados criados." << endl;
+
+	// Testando reg()
+	C1.reg(cd2);	C1.reg(sa1);	C1.reg(cd3);
+	C1.reg(cd1);	C1.reg(cd2);	C1.reg(cd2);
+	C1.reg(cd3);	C1.reg(cd2);	C1.reg(sa1);
+	C1.print(cout);
 	cout << endl;
+	cout << "==================================================================" << endl;
+	cout << "Produtos registrados." << endl;
 
-	Seccao<CD>::it_P it1 =  m_cds.search_P(cd1);	// it_p recebe a posição do primeiro CD no grupo
-	Seccao<CD>::it_P it2 =  m_cds.search_P(cd2);	//
+	// Tesetando iteratores
+	myLista<Produto*>::iterator it1 =  C1.search(cd1->get_barcode());
+	myLista<Produto*>::iterator it2 =  C1.search(sa1->get_barcode());
+	cout << "==================================================================" << endl;
+	cout << "Iteratores criados." << endl;
 
-	// Testando unregister
-	m_cds.unregister_P(it1);
+	// Testando unreg
+	C1.unreg(it1);
+	cout << "==================================================================" << endl;
+	cout << "Produto disregistrado." << endl;
 
 	// Testando price
-	cout << "TOTAL preço: "<< m_cds.price_P() << endl;
-	cout << "TOTAL quant: "<< m_cds.size_P() << endl;
+	cout << "TOTAL preço: "<< C1.price() << endl;
+	cout << "TOTAL quant: "<< C1.size() << endl;
+	cout << "==================================================================" << endl;
+	cout << "Preços e totais impressos." << endl;
 
 	// Testando iterator
-	cout << "preço it2: " << (*it2).get_quantity() * (*it2).get_price() << endl;
-	(*it2).set_quantity(1);
-	cout << "preço it2: " << (*it2).get_quantity() * (*it2).get_price() << endl;
-	(*it2).set_quantity(4);
-	cout << "preço it2: " << (*it2).get_quantity() * (*it2).get_price() << endl;
+	cout << "preço it2: " << (*it2)->get_quantity() * (*it2)->get_price() << endl;
+	(*it2)->set_quantity(1);
+	cout << "preço it2: " << (*it2)->get_quantity() * (*it2)->get_price() << endl;
+	(*it2)->set_quantity(4);
+	cout << "preço it2: " << (*it2)->get_quantity() * (*it2)->get_price() << endl;
 
-	cout << "TOTAL preço: "<< m_cds.price_P() << endl;
-	cout << "TOTAL quant: "<< m_cds.size_P() << endl;
+	cout << "TOTAL preço: "<< C1.price() << endl;
+	cout << "TOTAL quant: "<< C1.size() << endl;
+	cout << "==================================================================" << endl;
+	cout << "Iterators testados." << endl;
 
-	// Testando construtor de GRUPO_PRODUTO
+	// Testando construtor de Cesta
 	cout << "\nTestando construtor cópia." << endl;
-	Seccao<CD> a_cds(m_cds);	// criando grupo a
-	cout << "m = " << endl;
-	m_cds.print_P(cout);	// printando m
+	Cesta C2(C1);	// criando grupo a
+	cout << "1 = " << endl;
+	C1.print(cout);	// printando m
 	cout << endl;
-	cout << "a = " << endl;
-	a_cds.print_P(cout);	// printando a
+	cout << "2 = " << endl;
+	C2.print(cout);	// printando a
 	cout << endl;
+	cout << "==================================================================" << endl;
+	cout << "Cesta: Construtor cópia testado." << endl;
 
 	// Testando operador=
 	cout << "\nTestando operador=." << endl;
-	Seccao<CD> b_cds;	// criando grupo b
-	b_cds = a_cds;	// atribuido grupo a ao grupo b
-	b_cds.register_P( cd1 );	// modificando b
-	cout << "b = " << endl;
-	b_cds.print_P(cout);	// printando b
+	Cesta C3;	// criando grupo 3
+	C3 = C2;	// atribuido grupo a ao grupo 3
+	C3.reg( cd0 );	// modificando 3
+	cout << "3 = " << endl;
+	C3.print(cout);	// printando b
 	cout << endl;
+	cout << "==================================================================" << endl;
+	cout << "Cesta: operador= testado." << endl;
 
-	// Testando operador== GRUPO_PRODUTO
+	// Testando operador== Cesta
 	cout << "\nTestando operador==." << endl;
-	cout << "a e a" << (a_cds == a_cds?" ":" não ")<< "iguais." << endl;
-	cout << "m e a" << (m_cds == a_cds?" ":" não ")<< "iguais." << endl;
-	cout << "a e m" << (a_cds == m_cds?" ":" não ")<< "iguais." << endl;
-	cout << "a e b" << (a_cds == b_cds?" ":" não ")<< "iguais." << endl;
-	cout << "b e a" << (b_cds == a_cds?" ":" não ")<< "iguais." << endl;
+	cout << "2 e 2" << (C2 == C2?" ":" não ") << "iguais." << endl;
+	cout << "1 e 2" << (C1 == C2?" ":" não ") << "iguais." << endl;
+	cout << "2 e 1" << (C2 == C1?" ":" não ") << "iguais." << endl;
+	cout << "2 e 3" << (C2 == C3?" ":" não ") << "iguais." << endl;
+	cout << "3 e 2" << (C3 == C2?" ":" não ") << "iguais." << endl;
 
-	cout << "m = " << endl;
-	m_cds.print_P(cout);
+	cout << "1 = " << endl;
+	C1.print(cout);
+
 }
 
-void test2_Grupo_modify()
+
+/*
+void test2_Cesta_modify()
 {
-	Seccao<CD> m_cds;
+	Cesta<CD> m_cds;
 
 	CD cd0;
 	CD cd1("Superunknow","Soundgarden","Rock");
@@ -290,59 +313,62 @@ void test2_Grupo_modify()
 	cd3.set_provider("Bombom Produções");
 	cd3.set_price(1.99);
 
-	//m_cds.modify_P
+	//m_cds.modify
 }
+*/
 
-void test3_bau()
+
+void test3_Cesta()
 {
-	Bau loja;
-	Bau copia;
+	Cesta loja;
+	Cesta copia;
 
-	CD cd1("Superunknow","Soundgarden","Rock");
-	CD cd2("Melhor do que parece","O Terno","Rock");
-	CD cd3("Black album","Metallica","Infantil");
-	CD cd4("zapzap","os iphonistas","comedia");
-	Salgado sg1("14/06/2017",401,false,true);
-	Salgado sg2("15/06/2017",410,true,true);
-	Salgado sg3("15/06/2017",420,false,false);
+	CD* cd1 = new CD("Superunknow","Soundgarden","Rock");
+	CD* cd2 = new CD("Melhor do que parece","O Terno","Rock");
+	CD* cd3 = new CD("Black album","Metallica","Infantil");
+	CD* cd4 = new CD("zapzap","os iphonistas","comedia");
+	Salgado* sg1 = new Salgado("14/06/2017",401,false,true);
+	Salgado* sg2 = new Salgado("15/06/2017",410,true,true);
+	Salgado* sg3 = new Salgado("15/06/2017",420,false,false);
 
-	cd1.set_barcode("001");
-	cd1.set_provider("Sony Music");
-	cd1.set_price(14.3);
+	//salgado
+	cd1->set_barcode("001");
+	cd1->set_provider("Sony Music");
+	cd1->set_price(14.3);
 
-	cd2.set_barcode("002");
-	cd2.set_provider("Brasilzil");
-	cd2.set_price(10);
+	cd2->set_barcode("002");
+	cd2->set_provider("Brasilzil");
+	cd2->set_price(10);
 
-	cd3.set_barcode("003");
-	cd3.set_provider("Bombom Produções");
-	cd3.set_price(1.99);
+	cd3->set_barcode("003");
+	cd3->set_provider("Bombom Produções");
+	cd3->set_price(1.99);
 
-	cd4.set_barcode("004");
-	cd4.set_provider("Bombom Produções");
-	cd4.set_price(1.99);
+	cd4->set_barcode("004");
+	cd4->set_provider("Bombom Produções");
+	cd4->set_price(1.99);
 
 	//salgados
-	sg1.set_barcode("101");
-	sg1.set_provider("Soninha");
-	sg1.set_price(14.3);
+	sg1->set_barcode("101");
+	sg1->set_provider("Soninha");
+	sg1->set_price(14.3);
 
-	sg2.set_barcode("102");
-	sg2.set_provider("Brasilzil");
-	sg2.set_price(10);
+	sg2->set_barcode("102");
+	sg2->set_provider("Brasilzil");
+	sg2->set_price(10);
 
-	sg3.set_barcode("103");
-	sg3.set_provider("Bombom Produções");
-	sg3.set_price(1.99);
+	sg3->set_barcode("103");
+	sg3->set_provider("Bombom Produções");
+	sg3->set_price(1.99);
 
 
-	loja.register_CD(cd1);
-	loja.register_CD(cd2);
-	loja.register_CD(cd3);
-	loja.register_CD(cd4);
-	loja.register_Salgado(sg1);
-	loja.register_Salgado(sg2);
-	loja.register_Salgado(sg3);
+	loja.reg(cd1);
+	loja.reg(cd2);
+	loja.reg(cd3);
+	loja.reg(cd4);
+	loja.reg(sg1);
+	loja.reg(sg2);
+	loja.reg(sg3);
 
 	cout << "loja:\n";
 	loja.print(cout);
@@ -351,7 +377,7 @@ void test3_bau()
 	copia.print(cout);
 	cout << endl;
 
-	copia.absorb_B(loja);
+	//copia.absorb(loja);
 
 	cout << "-1-\n-1-\n-1-\n";
 	cout << "loja:\n";

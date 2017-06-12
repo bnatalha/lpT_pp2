@@ -20,7 +20,7 @@
 */
 class CD : public Produto
 {
-	friend class Bau;
+	//friend class Cesta;
 
 	private:
 		string name;	/**< Nome do CD */
@@ -52,6 +52,14 @@ class CD : public Produto
 		{ set_quantity(orig.get_quantity()); }
 
 		/**
+		* @brief Constrói um objeto CD a partir de um ponteiro para um Porduto
+		*/
+		CD(Produto* orig) 
+			: Produto( orig->get_type(), orig->get_provider(), orig->get_price(), orig->get_barcode() ),
+			name(orig->get_name()), artist(orig->get_artist()), style(orig->get_style())
+		{ set_quantity(orig->get_quantity()); }
+
+		/**
 		* @brief Destrutor virtual de CD
 		*/
 		virtual ~CD(){}
@@ -67,7 +75,7 @@ class CD : public Produto
 		void set_name(const string &x) { name = x; }	/**< Altera título do CD (string) */
 		void set_artist(const string &x) { artist = x; }	/**< Altera artista do CD (string) */
 		void set_style(const string &x) { style = x; }	/**< Altera o estilo do CD (string) */
-		void chage(); /**< Altera tudo do CD */
+		void change(); /**< Altera tudo do CD */
 
 		// auxiliar da sobrecarga de extração
 		void print_it (std::ostream& out) const;	/**< Função que define como vai ser a impressão do produto */
@@ -91,8 +99,7 @@ void CD::print_it(std::ostream& out) const
 		<< ", Preço Total: $" << 0.0+(*this)
 		<< "\n+\tTítulo: \"" << name << "\""
 		<< " , Artista: " << artist
-		<< " , Estilo: " << style
-		<< "";
+		<< " , Estilo: " << style;
 }
 
 /**
@@ -117,29 +124,26 @@ void CD::save_csv_it(std::ofstream& out)
 }
 
 
-void CD::chage()
+void CD::change()
 {
 	string new_s;
-	char u;
-	float new_f;
-	int new_i;
 
 	cout << "Insira novo fornecedor. >>" ;
 	cin >> new_s;	
 	cin.ignore();
 	set_provider(new_s);
 	cout << "Insira novo preço. >>" ;
-	cin >> new_f;	
+	cin >> new_s;	
 	cin.ignore();
-	set_price( stof(new_f) );
+	set_price( stof(new_s) );
 	cout << "Insira novo codigo de barras. >>" ;
 	cin >> new_s;	
 	cin.ignore();
 	set_barcode(new_s);
 	cout << "Insira nova quantidade. >>" ;
-	cin >> new_i;	
+	cin >> new_s;	
 	cin.ignore();
-	set_quantity( stoi(new_i) );
+	set_quantity( stoi(new_s) );
 
 	// PROPRIOS DO PRODUTO
 

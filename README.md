@@ -5,7 +5,7 @@ O programa gerado irá ajudar an admnistração dos produtos da loja QLeveTudo, 
 
 - Cadastro de um novo produto;
 - Remoção de um produto;
-- ~~Alteração dos dados cadastrais de um produto~~;
+- Alteração dos dados cadastrais de um produto;
 - Consulta aos dados cadastrais de um determinado produto ou por um tipo de produto;
 - ~~Consulta de produtos de um determinado fornecedor~~;
 - ~~Todas as atividades relacionadas ao cadastro de fornecedores~~;
@@ -14,9 +14,7 @@ O programa gerado irá ajudar an admnistração dos produtos da loja QLeveTudo, 
 
 Observações:
 - Só funcionam os produtos CD e Salgado;
-- Não modifica produtos;
 - Não avisa quando perecíveis estão vencidos;
-- Venda não funciona corretamente (descadastra o produto no lugar de diminuir sua quantidade);
 
 ### Compilando:
 

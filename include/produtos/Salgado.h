@@ -20,7 +20,7 @@
 */
 class Salgado : public Produto
 {
-	friend class Bau;
+	//friend class Cesta;
 	
 	private:
 		string expiration; /**< Vencimento do Salgado */
@@ -53,6 +53,14 @@ class Salgado : public Produto
 		{ set_quantity(orig.get_quantity()); }
 
 		/**
+		* @brief Constrói um objeto Salgado a partir de um ponteiro para um Porduto
+		*/
+		Salgado(Produto* orig) 
+			: Produto( orig->get_type(), orig->get_provider(), orig->get_price(), orig->get_barcode()),
+			expiration(orig->get_expiration()), sodium(orig->get_sodium()), gluten(orig->get_gluten()), lactose(orig->get_lactose())
+		{ set_quantity(orig->get_quantity()); }
+
+		/**
 		* @brief Destrutor virtual de Salgado
 		*/
 		virtual ~Salgado(){}
@@ -70,7 +78,7 @@ class Salgado : public Produto
 		void set_sodium(const float &x) { sodium = x; }	/**< Altera a taxa de açucar (em mg) do produto */
 		void set_gluten(const bool &x) { gluten = x; }	/**< Altera o atributo que diz se o produto contém glúten ou não */
 		void set_lactose(const bool &x) { lactose = x; }	/**< Altera o atributo que diz se o produto contém lactose ou não */
-		void chage(); /**< Altera tudo do Salgado */
+		void change(); /**< Altera tudo do Salgado */
 
 		// auxiliar da sobrecarga de extração
 		void print_it (std::ostream& out) const;	/**< Função que define como vai ser a impressão do produto */
@@ -86,7 +94,7 @@ class Salgado : public Produto
 */
 void Salgado::print_it(std::ostream& out) const
 {
-	out << "[Produto: " <<  product_type
+	out << "Produto: " <<  product_type
 		<< ", Fornecedor: " << provider
 		<< ", Preço: $" << price	// Trocar '.' por ',' na impressão
 		<< ", Código de Barras: " << barcode
@@ -95,8 +103,7 @@ void Salgado::print_it(std::ostream& out) const
 		<< "\n+\tVencimento: " << expiration
 		<< " , Taxa de sódio: " << sodium << "mg"
 		<< " , Contem glúten: " << (gluten? "Sim":"Não")
-		<< " , Contem lactose: " << (lactose? "Sim":"Não")
-		<< "]" << endl;
+		<< " , Contem lactose: " << (lactose? "Sim":"Não");
 }
 
 /**
@@ -121,30 +128,30 @@ void Salgado::save_csv_it(std::ofstream& out)
 	
 }
 
-void Salgado::chage()
+void Salgado::change()
 {
 
 	string new_s;
-	char u;
 	float new_f;
-	int new_i;
+	char u;
+	
 
 	cout << "Insira novo fornecedor. >>" ;
 	cin >> new_s;	
 	cin.ignore();
 	set_provider(new_s);
 	cout << "Insira novo preço. >>" ;
-	cin >> new_f;	
+	cin >> new_s;	
 	cin.ignore();
-	set_price( stof(new_f) );
+	set_price( std::stof(new_s) );
 	cout << "Insira novo codigo de barras. >>" ;
 	cin >> new_s;	
 	cin.ignore();
 	set_barcode(new_s);
 	cout << "Insira nova quantidade. >>" ;
-	cin >> new_i;	
+	cin >> new_s;	
 	cin.ignore();
-	set_quantity( stoi(new_i) );
+	set_quantity( std::stoi(new_s) );
 
 	// PROPRIOS DO PRODUTO
 
@@ -156,7 +163,7 @@ void Salgado::chage()
 	cout << "sódio: \"" << get_sodium() << "\"" << endl;
 
 	// GLUTEN
-	cout << "Contem glutem? (y/n). >>"
+	cout << "Contem glutem? (y/n). >>";
 	cin >> u;	// Armazena o novo glúten em 'u'
 	//cin.ignore();
 	// Modifica o glúten
@@ -164,7 +171,7 @@ void Salgado::chage()
 	cout << "glúten:  \"" << (get_gluten()?"":"NAO") << "contém\"."<< endl;
 
 	//LACTOSE
-	cout << "Contem lactose? (y/n). >>"
+	cout << "Contem lactose? (y/n). >>";
 	cin >> u;	// Armazena o novo lactose em 'u'
 	//cin.ignore();
 	// Modifica o lactose
@@ -187,7 +194,7 @@ void Salgado::load_csv_it (std::ifstream& in)
 
 	// Preço
 	getline(in, dummy, ';');	// ex.: dummy = "9.4"
-	set_price( stof(dummy) );	// modifica Fornecedor
+	set_price( std::stof(dummy) );	// modifica Fornecedor
 
 	// Código de Barras
 	in.ignore(1);	// ignora o primeiro '\"'
@@ -197,7 +204,7 @@ void Salgado::load_csv_it (std::ifstream& in)
 		
 	// Quantidade
 	getline(in, dummy, ';');	// ex.: dummy = "2"
-	set_quantity( stoi(dummy) );	// modifica Quantidade
+	set_quantity( std::stoi(dummy) );	// modifica Quantidade
 
 	// 
 
@@ -209,7 +216,7 @@ void Salgado::load_csv_it (std::ifstream& in)
 
 	// sódio
 	getline(in, dummy, ';');	// ex.: dummy = "24"
-	set_sodium( stof(dummy) );	// modifica sódio
+	set_sodium( std::stof(dummy) );	// modifica sódio
 
 	// glutem
 	getline(in, dummy, ';');	// ex.: dummy = true
